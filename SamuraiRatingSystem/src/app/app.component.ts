@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DatabaseService } from './service/database.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor(private dbConn: DatabaseService){
+
+  }
+
+  login(){
+    console.log('reaching')
+    this.dbConn.googlePopup();
+  }
 }
