@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+@import url('https://fonts.googleapis.com/css?family=Encode+Sans+Expanded:100,300|Raleway:100,400');
+
+.encode-sans-expanded{
+    font-family: 'Encode Sans Expanded', sans-serif;
+}
+
+.font-thin{
+    font-weight: 100;
+}
+
+.font-light{
+    font-weight: 300;
+}
+
+.font-regular{
+    font-weight: 400;
+}
+
+.raleway{
+    font-family: 'Raleway', sans-serif;
+}
+
+.dark-blue{
+    background-color: #000051;
+}
+
+.blue{
+    background-color: #1A237E;
+}
+
+.light-blue{
+    background-color: #534BAE;
+}
+
+
+.dark-orange{
+    background-color: #FFA000;
+}
+
+.light-orange{
+    background-color: #FFD149;
+}

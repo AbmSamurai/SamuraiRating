@@ -1,0 +1,10 @@
+.card-grid{
+    display: inline-flex;
+    width:100%;
+    flex-wrap: wrap;
+    
+}
+
+.crd{
+    margin-top: 50px;
+}
