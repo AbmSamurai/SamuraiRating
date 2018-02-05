@@ -1,4 +1,4 @@
-import { DatabaseService } from './service/database.service';
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
+import { LogInComponent } from './components/log-in/log-in.component';
 import { AngularFireModule } from 'angularfire2';
 
 export const config  = {
@@ -22,7 +23,8 @@ export const config  = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LogInComponent
   ],
   imports: [
     BrowserModule, 
@@ -30,6 +32,8 @@ export const config  = {
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     FormsModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [DatabaseService],
   bootstrap: [AppComponent]
