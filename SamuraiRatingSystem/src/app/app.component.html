@@ -8,3 +8,16 @@
 <h2>Team Samurai</h2>
 <button (click) = 'login()'>Login</button>
 
+<br>
+<input [(ngModel)] = "name" type="text" placeholder="Name">
+<input [(ngModel)] = "picURL" type="text" placeholder="pictureURL">
+<input [(ngModel)] = "pin" type="password" placeholder="Pin">
+
+<button (click) = "createTeam()">Create team</button>
+
+
+<!-- Name: name,
+Picture: pictureURL,
+Pin: pin,
+Rating: rating -->
+

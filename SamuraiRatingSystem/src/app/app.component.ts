@@ -8,6 +8,9 @@ import { DatabaseService } from './service/database.service';
 })
 export class AppComponent {
   title = 'app';
+  name;
+  picURL;
+  pin;
 
   constructor(private dbConn: DatabaseService){
 
@@ -16,5 +19,10 @@ export class AppComponent {
   login(){
     console.log('reaching')
     this.dbConn.googlePopup();
+  }
+
+  createTeam(){
+    this.dbConn.createTeam(this.name, this.picURL, this.pin)
+    
   }
 }

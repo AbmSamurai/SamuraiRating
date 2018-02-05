@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -27,7 +28,8 @@ export const config  = {
     BrowserModule, 
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule
   ],
   providers: [DatabaseService],
   bootstrap: [AppComponent]
