@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { AngularFireModule } from 'angularfire2';
+import { DatabaseService } from './service/database.service';
 
 export const config  = {
   apiKey: "AIzaSyADdYbrD14h7lBjRckwdUh5PoTwflXeVWk",
@@ -31,7 +32,7 @@ export const config  = {
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    FormsModule
+    FormsModule,
     BrowserModule,
     AppRoutingModule
   ],

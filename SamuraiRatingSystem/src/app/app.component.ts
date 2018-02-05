@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from './service/database.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { DatabaseService } from './service/database.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   name;
   picURL;
@@ -16,9 +16,15 @@ export class AppComponent {
 
   }
 
+  ngOnInit(){
+   
+  }
+
   login(){
     console.log('reaching')
+    console.log(this.dbConn.teams + "Another attempt");
     this.dbConn.googlePopup();
+    
   }
 
   createTeam(){
