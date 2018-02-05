@@ -5,12 +5,14 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
+import { TeamViewComponent } from './components/team-view/team-view.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LogInComponent
+    LogInComponent,
+    TeamViewComponent
   ],
   imports: [
     BrowserModule,
