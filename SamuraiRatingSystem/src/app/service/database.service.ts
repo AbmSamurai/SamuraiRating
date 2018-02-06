@@ -1,3 +1,4 @@
+import { Criteria, Question } from './../model/Criteria';
 import { Team } from './../model/Teams';
 import { Member } from './../model/Member';
 import { element } from 'protractor';
@@ -7,12 +8,15 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as Firebase from 'firebase/app';
+// import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
 
 @Injectable()
 export class DatabaseService {
     userList;
     teamList;
+    criteriaList;
+    criteria: Criteria[] = [];
     haveAccount: Boolean;
     teamKey;
     teams: Team[] = [];
@@ -32,6 +36,10 @@ export class DatabaseService {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
+    this.criteriaList = this.afDB.list("Criteria/Questions").snapshotChanges().map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
+
 
     this.getTeams();
 
@@ -39,6 +47,9 @@ export class DatabaseService {
         console.log(this.teams + "These are all teams")
     // }
     
+    // this.createCriteria();
+
+    // console.log(this.getCriteria());
     
     }
   
@@ -135,27 +146,30 @@ export class DatabaseService {
 
     getTeams() {
 
+        let array = [];
         this.teamList.forEach(element => {
             for(let i = 0; i < element.length; i++){
 
-                // console.log(element[i].key + "key");
-                // console.log(element[i].Members);
-                // console.log(element[i].Name);
-                // console.log(element[i].Picture);
-                // console.log(element[i].Pin);
-                // console.log(element[i].Rating);
+                console.log(element[i].key + "key");
+                console.log(element[i].Members);
+                console.log(element[i].Name);
+                console.log(element[i].Picture);
+                console.log(element[i].Pin);
+                console.log(element[i].Rating);
 
-                this.teams.push(
+                array.push(
                     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
                 );
 
-                console.log(this.teams[i].Key);
+                // console.log(this.teams[i].Key);
 
                 // console.log(element[i].User + "here")
                 // if(element[i].User == this.getCurrentUsersID()){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                 //     this.haveAccount = true;
                 // }
             }
+            this.teams = array;
+            console.log("my " + this.teams + " dogs");
             
         });
 
@@ -201,6 +215,36 @@ export class DatabaseService {
             
         });
         
+    }
+
+    getCriteria() {
+
+        let array = [];
+        this.criteriaList.forEach(element => {
+            for(let i = 0; i < element.length; i++){
+
+                array.push(
+                    new Criteria(element[i].Question)
+                )
+
+                console.log(element[i].Question)
+
+            }
+            this.criteria = array;
+            console.log("whuu " + this.criteria + " shem!")
+        });
+
+    }
+
+    // Don't run this again
+    createCriteria(question){
+        this.afDB.list("/Criteria/Questions").push({ 
+            Question: 'What do you feed dogs' 
+        });
+    }
+
+    deleteCriteria(key){
+
     }
 
     getCurrentUsersID() {

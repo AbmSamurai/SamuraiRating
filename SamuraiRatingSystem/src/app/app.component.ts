@@ -1,3 +1,4 @@
+import { Question } from './model/Criteria';
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from './service/database.service';
 
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
   login(){
     console.log('reaching')
     console.log(this.dbConn.teams + "Another attempt");
+    console.log(this.dbConn.getCriteria() + "Crying is not a habit")
     this.dbConn.googlePopup();
     
   }
