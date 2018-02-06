@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
 
   }
 
+
   ngOnInit(){
    
   }
@@ -29,8 +30,8 @@ export class AppComponent implements OnInit {
     
   }
 
-  createTeam(){
-    this.dbConn.createTeam(this.name, this.picURL, this.pin)
-    
+  createTeam() {
+    this.dbConn.createTeam(this.name, this.picURL, this.pin);
+
   }
 }
