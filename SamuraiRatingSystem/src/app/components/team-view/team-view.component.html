@@ -1,0 +1,36 @@
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="card teamcard col-md-5 col-sm-5" >
+     <div class="row">
+        <img class="card-img-top col-md-5 col-sm-5 team-ID" src="../../../assets/img/abashwe.jpg"  alt="Card image cap"><br>
+        <div class="card-block col-md-4 col-sm-4">
+          <h2 class="card-title">Team name</h2>
+          <h5 class="card-text">Averall points: </h5>
+          <p class="card-text">Last Sprint Points: </p>
+          <a href="#" class="btn btn-primary">View Team</a>
+        </div>
+     </div>
+      </div>
+<br>
+      <!-- <div class="card teamcard col-md-5 col-sm-5" >
+          <div class="row">
+
+             <img class="card-img-top col-md-5 col-sm-5 team-ID" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQv9r11HNCcWTmf0wfr2ZCd_GAxAS2pAY4ugC4FgyaSUs07wq16Q "  alt="Card image cap"><br>
+             <div class="card-block col-md-3">
+               <h4 class="card-title">Card title</h4>
+               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+               <a href="#" class="btn btn-primary">Go somewhere</a>
+             </div>
+          </div>
+           </div> -->
+
+<div *ngFor="let team of teams ">
+  <ul class="list-group">
+    <li class="list grout-item">{{team}}</li>
+  </ul>
+</div>
+
+</div>
+  </div>

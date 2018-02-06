@@ -11,6 +11,8 @@ import * as Firebase from 'firebase/app';
 
 @Injectable()
 export class DatabaseService {
+  public user$: Observable<Firebase.User>;
+
     userList;
     teamList;
     haveAccount: Boolean;
@@ -20,20 +22,23 @@ export class DatabaseService {
     displayName: string;
     photoURL: string;
 
-    constructor(private afDB: AngularFireDatabase, private afAuth: AngularFireAuth) {
+    constructor(
+        private afDB: AngularFireDatabase, 
+        private afAuth: AngularFireAuth
+        ) {
+    this.user$ = afAuth.authState;
 
     // Lists all the users in the DB
-    this.userList = this.afDB.list("Users").snapshotChanges().map(changes => {
+    this.userList = this.afDB.list('Users').snapshotChanges().map(changes => {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
     // Lists all the teams in the DB
-    this.teamList = this.afDB.list("Teams").snapshotChanges().map(changes => {
+    this.teamList = this.afDB.list('Teams').snapshotChanges().map(changes => {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
 
-    this.getTeams();
 
     // for(let i =0; i<this.teams.length; i++){
         console.log(this.teams + "These are all teams")
@@ -41,43 +46,44 @@ export class DatabaseService {
     
     
     }
-  
-    googlePopup() {
+
+    loginWithGoogle() {
 
         const prov = new Firebase.auth.GoogleAuthProvider();
-        
+
         this.afAuth.auth.signInWithPopup(prov).then(
             (success) => {
 
                 // alert('User added');
                 let flag: Boolean;
+                // tslint:disable-next-line:no-shadowed-variable
                 this.userList.forEach(element => {
-                    for(let i = 0; i < element.length; i++){
-                        console.log(element[i].User + "here")
-                        if(element[i].User === this.getCurrentUsersID()){
+                    for (let i = 0; i < element.length; i++) {
+                        console.log(element[i].User + 'here');
+                        if (element[i].User === this.getCurrentUsersID()) {
                             flag = false;
                             break;
                         }
                     }
 
-                    if (flag === undefined){
+                    if (flag === undefined) {
                         alert('User added');
-            
+
                         // If this is the first time, the team chosen by the user is added to his account
                         // The name will be the chosen team
                         this.createUser(this.getCurrentUsersID());
-                        
+
                     } else {
                         alert('Welcome Back Bro');
-                        
-                    } 
-                })
+
+                    }
+                });
 
                 // this.checkUser();
                 this.getTeams();
 
                 // this.afDB.list('Users').set({ Teams: { Name: '-dskvlkjnsjvnseuvnsnjdnv' }, User: 'Lihle' });
-                
+
         }).catch(
             (err) => {
                 console.log(err.message);
@@ -86,6 +92,7 @@ export class DatabaseService {
 
     // Must add the name and pictureURL
     createUser(id) {
+
         this.afDB.list("/Users/").push({
             Teams: { TeamID: "this.getTeamKey() "},
             Name: this.getUserName(), 
@@ -99,14 +106,15 @@ export class DatabaseService {
     }
 
     createTeam(name: string, pictureURL: string, pin: string) {
-        
+
         let flag: Boolean;
+        // tslint:disable-next-line:no-shadowed-variable
         this.teamList.forEach(element => {
-            for(let i = 0; i < element.length; i++){
+            for (let i = 0; i < element.length; i++) {
 
-                console.log(element[i].Name + "Name of team from DB");
+                console.log(element[i].Name + 'Name of team from DB');
 
-                if(element[i].Name === name){
+                if (element[i].Name === name) {
                     flag = false;
                     break;
                 }
@@ -114,8 +122,9 @@ export class DatabaseService {
 
             if (flag === undefined) {
                 alert('Team created');
-    
+
                 // Adds the new team to the database if it's not there already
+
                 this.afDB.list("/Teams/").push({
                     Members:  { UserID: this.getCurrentUsersID() } ,
                     Name: name,
@@ -123,17 +132,16 @@ export class DatabaseService {
                     Pin: pin,
                     Rating: 0
                 });
-                
-                
             } else {
                 alert('Team already exists');
-                
-            } 
+
+            }
         });
-        
+
     }
 
     getTeams() {
+
 
         this.teamList.forEach(element => {
             for(let i = 0; i < element.length; i++){
@@ -156,17 +164,18 @@ export class DatabaseService {
                 //     this.haveAccount = true;
                 // }
             }
-            
         });
 
     }
 
     // Focus on this
+
     getTeamMembers(key){
 
-        for(let i = 0; i < this.teams.length; i++){
+        for (let i = 0; i < this.teams.length; i++)  {
             console.log(this.teams[i].Members[i].UserID);
         }
+
 
         this.teamList.forEach(element => {
             for(let i = 0; i < element.length; i++){
@@ -207,22 +216,32 @@ export class DatabaseService {
         return this.afAuth.auth.currentUser.uid;
     }
 
-    getUserName(){
+    getUserName()  {
         return this.afAuth.auth.currentUser.displayName;
     }
 
     // This is the URL ne broes, just saying you know
-    getUserPicture(){
+    getUserPicture()  {
         return this.afAuth.auth.currentUser.photoURL;
     }
 
-    setTeamKey(key){
+    setTeamKey(key)  {
         this.teamKey = key;
     }
 
-    getTeamKey(){
+    getTeamKey()  {
         return this.teamKey;
     }
 
+
+
+
+    // getmyteam() {
+      // this.afDB.list('/Teams/' + this.getTeamKey() + '/')
+
+    //   return this.http.get(this.url)
+    //   .map(response => response.json())
+    //   .catch(this.handleError);
+    // }
 }
 

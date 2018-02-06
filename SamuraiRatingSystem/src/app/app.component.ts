@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
 
   }
 
+
   ngOnInit(){
    
   }
@@ -23,12 +24,12 @@ export class AppComponent implements OnInit {
   login(){
     console.log('reaching')
     console.log(this.dbConn.teams + "Another attempt");
-    this.dbConn.googlePopup();
+    this.dbConn.loginWithGoogle();
     
   }
 
-  createTeam(){
-    this.dbConn.createTeam(this.name, this.picURL, this.pin)
-    
+  createTeam() {
+    this.dbConn.createTeam(this.name, this.picURL, this.pin);
+
   }
 }
