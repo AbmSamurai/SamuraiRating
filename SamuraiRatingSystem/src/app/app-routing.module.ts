@@ -4,13 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { TeamViewComponent } from './components/team-view/team-view.component';
+
 
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -25,6 +27,13 @@ const routes: Routes = [
     path: 'registration',
     component: RegistrationComponent
   },
+
+    path: 'teamView',
+    component: TeamViewComponent,
+        // canActivate: [AuthGuard]
+
+  }
+
 ];
 
 
