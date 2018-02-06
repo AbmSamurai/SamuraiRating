@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
-
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 @import url('https://fonts.googleapis.com/css?family=Encode+Sans+Expanded:100,300|Raleway:100,400');
 
 .encode-sans-expanded{
@@ -43,3 +43,23 @@
 .light-orange{
     background-color: #FFD149;
 }
+
+
+.submit-button{
+    width: 100px;
+    height:60px;
+    background-color: #FFA000;
+    border-radius: 10px;
+    display:flex;
+    align-content: center;
+    cursor: pointer;
+    color: #fff;
+}
+
+.submit-text{
+    margin:auto;
+}
+
+
+
+

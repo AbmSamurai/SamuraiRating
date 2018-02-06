@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
+  flipped:boolean;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+
+  flip(){
+    this.flipped = !this.flipped;
+  }
 }
