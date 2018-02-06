@@ -16,13 +16,9 @@ export class AppComponent {
 
   }
 
-  login(){
-    console.log('reaching')
-    this.dbConn.googlePopup();
-  }
 
-  createTeam(){
-    this.dbConn.createTeam(this.name, this.picURL, this.pin)
-    
+  createTeam() {
+    this.dbConn.createTeam(this.name, this.picURL, this.pin);
+
   }
 }

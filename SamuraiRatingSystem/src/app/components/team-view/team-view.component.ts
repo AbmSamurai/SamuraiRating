@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatabaseService } from '../../service/database.service';
 
 @Component({
   selector: 'app-team-view',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./team-view.component.css']
 })
 export class TeamViewComponent implements OnInit {
-
-  constructor() { }
+   teams: any = this.dbs.getTeams();
+  constructor(private dbs: DatabaseService) {
+    // console.log('' + this.dbs.getTeams());
+   }
 
   ngOnInit() {
-  }
+    // console.log('' + this.dbs.getTeams());
+    // console.log('teamlist ' + this.dbs.teamList.key);
+      }
 
 }

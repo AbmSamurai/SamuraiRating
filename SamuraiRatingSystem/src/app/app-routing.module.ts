@@ -9,7 +9,7 @@ import { TeamViewComponent } from './components/team-view/team-view.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'teamView',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -18,7 +18,9 @@ const routes: Routes = [
   },
   {
     path: 'teamView',
-    component: TeamViewComponent
+    component: TeamViewComponent,
+        // canActivate: [AuthGuard]
+
   }
 ];
 

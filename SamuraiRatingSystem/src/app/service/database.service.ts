@@ -16,8 +16,13 @@ export class DatabaseService {
     haveAccount: Boolean;
     teamKey;
     teams: Team[] = [];
+  public user$: Observable<Firebase.User>;
 
-    constructor(private afDB: AngularFireDatabase, private afAuth: AngularFireAuth) {
+    constructor(
+        private afDB: AngularFireDatabase, 
+        private afAuth: AngularFireAuth
+        ) {
+    this.user$ = afAuth.authState;
 
     // Lists all the users in the DB
     this.userList = this.afDB.list('Users').snapshotChanges().map(changes => {
@@ -32,7 +37,7 @@ export class DatabaseService {
 
     }
 
-    googlePopup() {
+    loginWithGoogle() {
 
         const prov = new Firebase.auth.GoogleAuthProvider();
 
@@ -82,7 +87,8 @@ export class DatabaseService {
             User: id,
         });
 
-        this.afDB.list('/Teams/' + this.getTeamKey() + '/').push({
+        this.afDB.list('/Teams/' + this.getTeamKey() + '/')
+        .push({
             Members: { Name: id },
         });
     }
@@ -123,19 +129,18 @@ export class DatabaseService {
     }
 
     getTeams() {
-
         // tslint:disable-next-line:no-shadowed-variable
         this.teamList.forEach( element => {
             for (let i = 0; i < element.length; i++) {
 
-                // console.log(element[i].key + "key");
-                // console.log(element[i].Members);
-                // console.log(element[i].Name);
-                // console.log(element[i].Picture);
-                // console.log(element[i].Pin);
-                // console.log(element[i].Rating);
+                console.log(element[i].key + 'key');
+                console.log(element[i].Members);
+                console.log(element[i].Name);
+                console.log(element[i].Picture);
+                console.log(element[i].Pin);
+                console.log(element[i].Rating);
 
-                return this.teams.push(
+               this.teams.push(
                     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
                 );
 
@@ -178,5 +183,15 @@ export class DatabaseService {
         return this.teamKey;
     }
 
+
+
+
+    // getmyteam() {
+      // this.afDB.list('/Teams/' + this.getTeamKey() + '/')
+
+    //   return this.http.get(this.url)
+    //   .map(response => response.json())
+    //   .catch(this.handleError);
+    // }
 }
 

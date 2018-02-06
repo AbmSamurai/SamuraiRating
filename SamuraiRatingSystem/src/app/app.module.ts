@@ -12,6 +12,7 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { TeamViewComponent } from './components/team-view/team-view.component';
 import { AngularFireModule } from 'angularfire2';
 import { DatabaseService } from './service/database.service';
+import { AuthGuard } from './service/auth-guard.service';
 
 export const config  = {
   apiKey: 'AIzaSyADdYbrD14h7lBjRckwdUh5PoTwflXeVWk',
@@ -37,8 +38,11 @@ export const config  = {
     FormsModule,
     BrowserModule,
     AppRoutingModule
-  ],
-  providers: [DatabaseService],
+  ], 
+  providers: [
+    DatabaseService,
+    AuthGuard
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
