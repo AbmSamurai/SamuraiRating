@@ -11,12 +11,16 @@ import * as Firebase from 'firebase/app';
 
 @Injectable()
 export class DatabaseService {
+  public user$: Observable<Firebase.User>;
+
     userList;
     teamList;
     haveAccount: Boolean;
     teamKey;
     teams: Team[] = [];
-  public user$: Observable<Firebase.User>;
+    members: Member[] = [];
+    displayName: string;
+    photoURL: string;
 
     constructor(
         private afDB: AngularFireDatabase, 
@@ -35,6 +39,12 @@ export class DatabaseService {
     });
 
 
+
+    // for(let i =0; i<this.teams.length; i++){
+        console.log(this.teams + "These are all teams")
+    // }
+    
+    
     }
 
     loginWithGoogle() {
@@ -82,14 +92,16 @@ export class DatabaseService {
 
     // Must add the name and pictureURL
     createUser(id) {
-        this.afDB.list('/Users/').push({
-            Teams: { Name: this.getTeamKey() },
+
+        this.afDB.list("/Users/").push({
+            Teams: { TeamID: "this.getTeamKey() "},
+            Name: this.getUserName(), 
+            PictureURL: this.getUserPicture(),
             User: id,
         });
 
-        this.afDB.list('/Teams/' + this.getTeamKey() + '/')
-        .push({
-            Members: { Name: id },
+        this.afDB.list("/Teams/" + this.getTeamKey() + "/").push({
+            Members: { UserID: id },
         });
     }
 
@@ -112,14 +124,14 @@ export class DatabaseService {
                 alert('Team created');
 
                 // Adds the new team to the database if it's not there already
-                this.afDB.list('/Teams/').push({
-                    Members: [],
+
+                this.afDB.list("/Teams/").push({
+                    Members:  { UserID: this.getCurrentUsersID() } ,
                     Name: name,
                     Picture: pictureURL,
                     Pin: pin,
                     Rating: 0
                 });
-
             } else {
                 alert('Team already exists');
 
@@ -129,23 +141,26 @@ export class DatabaseService {
     }
 
     getTeams() {
-        // tslint:disable-next-line:no-shadowed-variable
-        this.teamList.forEach( element => {
-            for (let i = 0; i < element.length; i++) {
 
-                console.log(element[i].key + 'key');
-                console.log(element[i].Members);
-                console.log(element[i].Name);
-                console.log(element[i].Picture);
-                console.log(element[i].Pin);
-                console.log(element[i].Rating);
 
-               this.teams.push(
+        this.teamList.forEach(element => {
+            for(let i = 0; i < element.length; i++){
+
+                // console.log(element[i].key + "key");
+                // console.log(element[i].Members);
+                // console.log(element[i].Name);
+                // console.log(element[i].Picture);
+                // console.log(element[i].Pin);
+                // console.log(element[i].Rating);
+
+                this.teams.push(
                     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
                 );
 
+                console.log(this.teams[i].Key);
+
                 // console.log(element[i].User + "here")
-                // if(element[i].User == this.getCurrentUsersID()){
+                // if(element[i].User == this.getCurrentUsersID()){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                 //     this.haveAccount = true;
                 // }
             }
@@ -154,12 +169,47 @@ export class DatabaseService {
     }
 
     // Focus on this
-    getTeamMembers() {
+
+    getTeamMembers(key){
 
         for (let i = 0; i < this.teams.length; i++)  {
             console.log(this.teams[i].Members[i].UserID);
         }
 
+
+        this.teamList.forEach(element => {
+            for(let i = 0; i < element.length; i++){
+
+                // console.log(element[i].key + "key");
+                // console.log(element[i].Members);
+                // console.log(element[i].Name);
+                // console.log(element[i].Picture);
+                // console.log(element[i].Pin);
+                // console.log(element[i].Rating);
+
+                // this.teams.push(
+                //     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
+                // );
+
+                // console.log(this.teams[i].Key);
+
+                // console.log(element[i].User + "here")
+                // if(element[i].User == this.getCurrentUsersID()){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                //     this.haveAccount = true;
+                // }
+
+                if(element[i].key === key){
+                    
+                    for(let z = 0; i < element[i].Members.length; i++){
+                        this.members.push(
+                            new Member(element[i].Members[z].UserID)
+                        )
+                    }
+                }
+            }
+            
+        });
+        
     }
 
     getCurrentUsersID() {
