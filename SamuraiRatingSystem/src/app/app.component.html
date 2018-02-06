@@ -1,3 +1,4 @@
+
 <!--The content below is only a placeholder and can be replaced.-->
 
 <app-nav></app-nav>
@@ -9,4 +10,22 @@
   <img width="300" alt="Angular Logo" src="http://moziru.com/images/drawn-samurai-cartoon-8.jpg">
 </div>
 <h2>Team Samurai</h2> -->
+
+
+
+<!--
+<button (click) = 'login()'>Login</button> -->
+
+<!-- <br> -->
+<input [(ngModel)] = "name" type="text" placeholder="Name">
+<input [(ngModel)] = "picURL" type="text" placeholder="pictureURL">
+<input [(ngModel)] = "pin" type="password" placeholder="Pin">
+
+<button (click) = "createTeam()">Create team</button>
+
+
+<!-- Name: name,
+Picture: pictureURL,
+Pin: pin,
+Rating: rating -->
 <router-outlet></router-outlet>
