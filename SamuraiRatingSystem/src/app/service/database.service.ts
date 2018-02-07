@@ -59,7 +59,7 @@ export class DatabaseService {
     
     }
 
-    loginWithGoogle() {
+    googlePopup() {
 
         const prov = new Firebase.auth.GoogleAuthProvider();
 
