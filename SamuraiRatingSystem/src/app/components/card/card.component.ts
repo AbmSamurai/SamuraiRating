@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { print } from 'util';
+import { DatabaseService } from '../../service/database.service';
 
 @Component({
   selector: 'app-card',
@@ -6,16 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card.component.css']
 })
 export class CardComponent implements OnInit {
+demoTeams = this.dbs.teams;
+  flipped: boolean;
 
-  flipped:boolean;
+  constructor(private dbs: DatabaseService) {
+    // this.demoTeams = this.dbs.getTeams();
+    console.log('demo teams as follows ' + this.demoTeams);
 
-  constructor() { }
+  }
 
   ngOnInit() {
   }
 
 
-  flip(){
+  flip() {
     this.flipped = !this.flipped;
   }
 }
