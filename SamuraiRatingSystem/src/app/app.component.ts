@@ -30,6 +30,5 @@ export class AppComponent implements OnInit {
 
   createTeam() {
     this.dbConn.createTeam(this.name, this.picURL, this.pin);
-
   }
 }

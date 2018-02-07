@@ -4,7 +4,7 @@ import { DatabaseService } from '../../service/database.service';
 @Component({
   selector: 'app-team-view',
   templateUrl: './team-view.component.html',
-  styleUrls: ['./team-view.component.css']
+  styleUrls: ['./team-view.component.css', '../../../assets/styles/mainstyle.css']
 })
 export class TeamViewComponent implements OnInit {
    teams: any = this.dbs.getTeams();
