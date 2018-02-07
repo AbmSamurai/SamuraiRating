@@ -1,0 +1,60 @@
+.nav {
+  border: 1px solid black;
+  height: 60px;
+  margin: 0px !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.navButton{
+  width: 86%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logo {
+  height: 100%;
+}
+
+.btn{
+  color: #fff;
+  height:100%;
+}
+#team {
+  font-size: 24px;
+  color: #fff;
+}
+
+#samurai {
+  font-size: 36px;
+  display: flex;
+  height: 36px;
+  float: right;
+  width: 147px;
+  line-height: 2.3;
+  color: #fff;
+}
+
+.fa{
+  color: #fff;
+}
+
+
+a{
+  color: #fff !important;
+  margin: auto;
+  margin:20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover{
+  opacity: 0.6;
+}
+
+
+.links{
+  display: flex;
+}

@@ -1,0 +1,31 @@
+<div>
+    <div class="password">
+        <h3 class="col-4 col-md-8">Team name</h3>
+        <input class="col-7 col-md-8" type = 'text'>
+    </div>
+
+
+<div class="image-container">
+      <h3 class="col-4 col-md-10" for="profile-picture">Upload Profile Picture:</h3>
+    <div class="image-preview-container col-7">
+      <input class="image-input form-control" (change)="profileUpload($event)" id="profile-picture" type="file">
+
+      <div class="button-cover d-flex">
+        <i class="plus-button fa fa-plus-circle"></i>
+      </div>
+
+      <div [style.opacity]="profilePicUrl !==undefined ? '1' : '0'" class="image-preview">
+          <img src="{{profilePicUrl}}" alt="image preview...">
+        </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-12 submit-button-container">
+      <div class="submit-button"><span class="submit-text">Submit</span></div> 
+  </div>
+ 
+</div>
+
+
