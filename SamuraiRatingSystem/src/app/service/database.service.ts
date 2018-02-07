@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { Criteria, Question } from './../model/Criteria';
 import { Team } from './../model/Teams';
 import { Member } from './../model/Member';
 import { element } from 'protractor';
@@ -7,6 +9,7 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as Firebase from 'firebase/app';
+// import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
 
 @Injectable()
@@ -15,6 +18,8 @@ export class DatabaseService {
 
     userList;
     teamList;
+    criteriaList;
+    criteria: Criteria[] = [];
     haveAccount: Boolean;
     teamKey;
     teams: Team[] = [];
@@ -24,7 +29,8 @@ export class DatabaseService {
 
     constructor(
         private afDB: AngularFireDatabase, 
-        private afAuth: AngularFireAuth
+        private afAuth: AngularFireAuth,
+        private router: Router
         ) {
     this.user$ = afAuth.authState;
 
@@ -38,16 +44,24 @@ export class DatabaseService {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
+    this.criteriaList = this.afDB.list("Criteria/Questions").snapshotChanges().map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
 
+
+    this.getTeams();
 
     // for(let i =0; i<this.teams.length; i++){
         console.log(this.teams + "These are all teams")
     // }
     
+    // this.createCriteria();
+
+    // console.log(this.getCriteria());
     
     }
 
-    loginWithGoogle() {
+    googlePopup() {
 
         const prov = new Firebase.auth.GoogleAuthProvider();
 
@@ -75,6 +89,7 @@ export class DatabaseService {
 
                     } else {
                         alert('Welcome Back Bro');
+                        this.router.navigate(['/dashboard']);
 
                     }
                 });
@@ -94,15 +109,15 @@ export class DatabaseService {
     createUser(id) {
 
         this.afDB.list("/Users/").push({
-            Teams: { TeamID: "this.getTeamKey() "},
+            Teams: { TeamID: this.getTeamKey() },
             Name: this.getUserName(), 
             PictureURL: this.getUserPicture(),
             User: id,
         });
 
-        this.afDB.list("/Teams/" + this.getTeamKey() + "/").push({
-            Members: { UserID: id },
-        });
+        // this.afDB.list("/Teams/" + this.getTeamKey() + "/Members/").push({
+        //     Members: { UserID: id },
+        // });
     }
 
     createTeam(name: string, pictureURL: string, pin: string) {
@@ -126,7 +141,6 @@ export class DatabaseService {
                 // Adds the new team to the database if it's not there already
 
                 this.afDB.list("/Teams/").push({
-                    Members:  { UserID: this.getCurrentUsersID() } ,
                     Name: name,
                     Picture: pictureURL,
                     Pin: pin,
@@ -142,7 +156,7 @@ export class DatabaseService {
 
     getTeams() {
 
-
+        let array = [];
         this.teamList.forEach(element => {
             for(let i = 0; i < element.length; i++){
 
@@ -153,17 +167,20 @@ export class DatabaseService {
                 // console.log(element[i].Pin);
                 // console.log(element[i].Rating);
 
-                this.teams.push(
+                array.push(
                     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
                 );
 
-                console.log(this.teams[i].Key);
+                // console.log(this.teams[i].Key);
 
                 // console.log(element[i].User + "here")
                 // if(element[i].User == this.getCurrentUsersID()){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                 //     this.haveAccount = true;
                 // }
             }
+            this.teams = array;
+            console.log("my " + this.teams + " dogs");
+            
         });
 
     }
@@ -212,6 +229,36 @@ export class DatabaseService {
         
     }
 
+    getCriteria() {
+
+        let array = [];
+        this.criteriaList.forEach(element => {
+            for(let i = 0; i < element.length; i++){
+
+                array.push(
+                    new Criteria(element[i].Question)
+                )
+
+                console.log(element[i].Question)
+
+            }
+            this.criteria = array;
+            console.log("whuu " + this.criteria + " shem!")
+        });
+
+    }
+
+    // Don't run this again
+    createCriteria(question){
+        this.afDB.list("/Criteria/Questions").push({ 
+            Question: 'What do you feed dogs' 
+        });
+    }
+
+    deleteCriteria(key){
+
+    }
+
     getCurrentUsersID() {
         return this.afAuth.auth.currentUser.uid;
     }
@@ -231,6 +278,12 @@ export class DatabaseService {
 
     getTeamKey()  {
         return this.teamKey;
+    }
+
+    logout() {
+        this.afAuth.auth.signOut().then(() => {
+            this.router.navigate(['/login']);
+        });
     }
 
 

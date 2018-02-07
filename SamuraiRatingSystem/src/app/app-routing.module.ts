@@ -23,11 +23,12 @@ const routes: Routes = [
   {
     path: "registration",
     component: RegistrationComponent
-  },
-  {
-    path: "teamView",
-    component: TeamViewComponent
-    // canActivate: [AuthGuard]
+  },{
+
+    path: 'teamView',
+    component: TeamViewComponent,
+        // canActivate: [AuthGuard]
+
   }
 ];
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatabaseService } from '../../service/database.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +10,7 @@ export class NavComponent implements OnInit {
 
   selected:boolean;
 
-  constructor() { }
+  constructor(private dbConn: DatabaseService) { }
 
   ngOnInit() {
   }
@@ -17,6 +18,10 @@ export class NavComponent implements OnInit {
   switch() {
     this.selected = !this.selected;
     console.log(this.selected);
+  }
+
+  logout(){
+    this.dbConn.logout();
   }
 
 }

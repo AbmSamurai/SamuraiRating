@@ -1,3 +1,4 @@
+import { DatabaseService } from './../../../service/database.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,14 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamRegistrationComponent implements OnInit {
 
+  teamName;
+  teamPic;
+  teamPin;
+
   profilePicUrl: any;
   profilePicture:ProfilePicture;
 
-  constructor() { }
+  constructor(private dbConn: DatabaseService) { }
 
   ngOnInit() {
+    
+    
   }
 
+  // createTeam(name: string, pictureURL: string, pin: string) {
+
+  submit(){
+    this.dbConn.createTeam(this.teamName, this.profilePicUrl, this.teamPin);
+  }
 
   profileUpload(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -44,4 +56,6 @@ export class ProfilePicture{
   constructor(file:File){
     this.file= file;
   }
+
+  
 }

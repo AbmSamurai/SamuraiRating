@@ -41,7 +41,7 @@ export const config  = {
     TeamRegistrationComponent,
     PersonRegistrationComponent,
     AdminRegistrationComponent,
-    TeamViewComponent
+    TeamViewComponent,
   ],
   imports: [
     BrowserModule,

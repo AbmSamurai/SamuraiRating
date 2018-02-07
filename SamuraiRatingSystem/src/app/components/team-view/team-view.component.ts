@@ -12,6 +12,8 @@ import { DatabaseService } from '../../service/database.service';
 export class TeamViewComponent implements OnInit {
   @Input() teams: any;
 
+  // @Input('teams') teams: Team[];
+
   //  teams: any = this.dbs.getTeams();
   constructor(private dbs: DatabaseService) {
     console.log('' + this.dbs.getTeams());
