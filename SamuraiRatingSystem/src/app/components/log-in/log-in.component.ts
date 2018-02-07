@@ -15,7 +15,7 @@ export class LogInComponent implements OnInit {
 
 
   login() {
-this.dbauth.googlePopup();
+    this.dbauth.googlePopup();
   }
 
 }

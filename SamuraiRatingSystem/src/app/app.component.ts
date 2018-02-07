@@ -22,16 +22,16 @@ export class AppComponent implements OnInit {
    
   }
 
-  login(){
-    console.log('reaching')
-    console.log(this.dbConn.teams + "Another attempt");
-    console.log(this.dbConn.getCriteria() + "Crying is not a habit")
-    this.dbConn.googlePopup();
+  // login(){
+  //   console.log('reaching')
+  //   console.log(this.dbConn.teams + "Another attempt");
+  //   console.log(this.dbConn.getCriteria() + "Crying is not a habit")
+  //   this.dbConn.googlePopup();
     
-  }
+  // }
 
-  createTeam() {
-    this.dbConn.createTeam(this.name, this.picURL, this.pin);
+  // createTeam() {
+  //   this.dbConn.createTeam(this.name, this.picURL, this.pin);
 
-  }
+  // }
 }

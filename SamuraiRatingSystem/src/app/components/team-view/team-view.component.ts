@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Team } from './../../model/Teams';
+import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from '../../service/database.service';
 
 @Component({
@@ -7,7 +8,9 @@ import { DatabaseService } from '../../service/database.service';
   styleUrls: ['./team-view.component.css']
 })
 export class TeamViewComponent implements OnInit {
-   teams: any = this.dbs.getTeams();
+  @Input('teams') teams: Team[];
+  
+  //  teams: any = this.dbs.getTeams();
   constructor(private dbs: DatabaseService) {
     // console.log('' + this.dbs.getTeams());
    }

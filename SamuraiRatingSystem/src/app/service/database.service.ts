@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Criteria, Question } from './../model/Criteria';
 import { Team } from './../model/Teams';
 import { Member } from './../model/Member';
@@ -28,7 +29,8 @@ export class DatabaseService {
 
     constructor(
         private afDB: AngularFireDatabase, 
-        private afAuth: AngularFireAuth
+        private afAuth: AngularFireAuth,
+        private router: Router
         ) {
     this.user$ = afAuth.authState;
 
@@ -87,6 +89,7 @@ export class DatabaseService {
 
                     } else {
                         alert('Welcome Back Bro');
+                        this.router.navigate(['/dashboard']);
 
                     }
                 });
@@ -106,15 +109,15 @@ export class DatabaseService {
     createUser(id) {
 
         this.afDB.list("/Users/").push({
-            Teams: { TeamID: "this.getTeamKey() "},
+            Teams: { TeamID: this.getTeamKey() },
             Name: this.getUserName(), 
             PictureURL: this.getUserPicture(),
             User: id,
         });
 
-        this.afDB.list("/Teams/" + this.getTeamKey() + "/").push({
-            Members: { UserID: id },
-        });
+        // this.afDB.list("/Teams/" + this.getTeamKey() + "/Members/").push({
+        //     Members: { UserID: id },
+        // });
     }
 
     createTeam(name: string, pictureURL: string, pin: string) {
@@ -138,7 +141,6 @@ export class DatabaseService {
                 // Adds the new team to the database if it's not there already
 
                 this.afDB.list("/Teams/").push({
-                    Members:  { UserID: this.getCurrentUsersID() } ,
                     Name: name,
                     Picture: pictureURL,
                     Pin: pin,
@@ -158,12 +160,12 @@ export class DatabaseService {
         this.teamList.forEach(element => {
             for(let i = 0; i < element.length; i++){
 
-                console.log(element[i].key + "key");
-                console.log(element[i].Members);
-                console.log(element[i].Name);
-                console.log(element[i].Picture);
-                console.log(element[i].Pin);
-                console.log(element[i].Rating);
+                // console.log(element[i].key + "key");
+                // console.log(element[i].Members);
+                // console.log(element[i].Name);
+                // console.log(element[i].Picture);
+                // console.log(element[i].Pin);
+                // console.log(element[i].Rating);
 
                 array.push(
                     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
@@ -276,6 +278,12 @@ export class DatabaseService {
 
     getTeamKey()  {
         return this.teamKey;
+    }
+
+    logout() {
+        this.afAuth.auth.signOut().then(() => {
+            this.router.navigate(['/login']);
+        });
     }
 
 

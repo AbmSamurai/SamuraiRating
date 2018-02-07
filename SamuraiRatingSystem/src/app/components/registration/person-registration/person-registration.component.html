@@ -2,17 +2,19 @@
     <div class="password">
         <h3 class="col-6 col-sm-10 col-md-12">Team Name</h3>
         <select  class=" col-10 col-sm-10 col-md-12">
-            <option>Carrot</option>
-            <option>ABM</option>
-            <option>ICB</option>
-          </select>
+            <option>Choose a team</option>
+            <option *ngFor = "let team of teams" (click) = "setKey(team.Key)">{{ team.Name }}</option>
+            <!-- <option>ABM</option>
+            <option>ICB</option> -->
+        </select>
     </div>
-    <div class="google col-10">
+    <!-- <div class="google col-10">
         <div>Google</div>
-    </div>
+    </div> -->
+    <app-log-in></app-log-in>
 
-    <div class="col-12 submit-button-container">
+    <!-- <div class="col-12 submit-button-container">
         <div class="submit-button"><span class="submit-text">Submit</span></div> 
-    </div>
+    </div> -->
 </div>
 
