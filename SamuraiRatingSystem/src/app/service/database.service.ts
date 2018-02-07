@@ -20,22 +20,22 @@ export class DatabaseService {
     constructor(private afDB: AngularFireDatabase, private afAuth: AngularFireAuth) {
 
     // Lists all the users in the DB
-    this.userList = this.afDB.list("Users").snapshotChanges().map(changes => {
+    this.userList = this.afDB.list('Users').snapshotChanges().map(changes => {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
     // Lists all the teams in the DB
-    this.teamList = this.afDB.list("Teams").snapshotChanges().map(changes => {
+    this.teamList = this.afDB.list('Teams').snapshotChanges().map(changes => {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
-    
+
     }
   
     googlePopup() {
 
         const prov = new Firebase.auth.GoogleAuthProvider();
-        
+
         this.afAuth.auth.signInWithPopup(prov).then(
             (success) => {
 
@@ -52,22 +52,22 @@ export class DatabaseService {
 
                     if (flag === undefined){
                         alert('User added');
-            
+
                         // If this is the first time, the team chosen by the user is added to his account
                         // The name will be the chosen team
                         this.createUser(this.getCurrentUsersID());
-                        
+
                     } else {
                         alert('Welcome Back Bro');
-                        
-                    } 
+
+                    }
                 })
 
                 // this.checkUser();
                 this.getTeams();
 
                 // this.afDB.list('Users').set({ Teams: { Name: '-dskvlkjnsjvnseuvnsnjdnv' }, User: 'Lihle' });
-                
+
         }).catch(
             (err) => {
                 console.log(err.message);
@@ -87,14 +87,14 @@ export class DatabaseService {
     }
 
     createTeam(name: string, pictureURL: string, pin: string) {
-        
+
         let flag: Boolean;
         this.teamList.forEach(element => {
-            for(let i = 0; i < element.length; i++){
+            for(let i = 0; i < element.length; i++) {
 
-                console.log(element[i].Name + "Name of team from DB");
+                console.log(element[i].Name + 'Name of team from DB');
 
-                if(element[i].Name === name){
+                if(element[i].Name === name) {
                     flag = false;
                     break;
                 }
@@ -102,28 +102,28 @@ export class DatabaseService {
 
             if (flag === undefined) {
                 alert('Team created');
-    
+
                 // Adds the new team to the database if it's not there already
-                this.afDB.list("/Teams/").push({
+                this.afDB.list('/Teams/').push({
                     Members: [],
                     Name: name,
                     Picture: pictureURL,
                     Pin: pin,
                     Rating: 0
                 });
-                
+
             } else {
                 alert('Team already exists');
-                
-            } 
+
+            }
         });
-        
+
     }
 
     getTeams() {
 
         this.teamList.forEach(element => {
-            for(let i = 0; i < element.length; i++){
+            for (let i = 0; i < element.length; i++) {
 
                 // console.log(element[i].key + "key");
                 // console.log(element[i].Members);
@@ -141,37 +141,37 @@ export class DatabaseService {
                 //     this.haveAccount = true;
                 // }
             }
-        })
+        });
 
     }
 
     // Focus on this
-    getTeamMembers(){
+    getTeamMembers() {
 
-        for(let i = 0; i < this.teams.length; i++){
+        for (let i = 0; i < this.teams.length; i++) {
             console.log(this.teams[i].Members[i].UserID);
         }
-        
+
     }
 
     getCurrentUsersID() {
         return this.afAuth.auth.currentUser.uid;
     }
 
-    getUserName(){
+    getUserName() {
         return this.afAuth.auth.currentUser.displayName;
     }
 
     // This is the URL ne broes, just saying you know
-    getUserPicture(){
+    getUserPicture() {
         return this.afAuth.auth.currentUser.photoURL;
     }
 
-    setTeamKey(key){
+    setTeamKey(key) {
         this.teamKey = key;
     }
 
-    getTeamKey(){
+    getTeamKey() {
         return this.teamKey;
     }
 
