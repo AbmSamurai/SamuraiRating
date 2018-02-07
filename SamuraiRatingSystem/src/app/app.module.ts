@@ -40,7 +40,7 @@ export const config  = {
     RegistrationComponent,
     TeamRegistrationComponent,
     PersonRegistrationComponent,
-    AdminRegistrationComponent
+    AdminRegistrationComponent,
     TeamViewComponent
   ],
   imports: [
