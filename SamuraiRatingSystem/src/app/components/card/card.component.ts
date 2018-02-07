@@ -1,5 +1,7 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { print } from 'util';
+import { DatabaseService } from '../../service/database.service';
 import { Team } from '../../model/Teams';
 
 @Component({
@@ -10,18 +12,22 @@ import { Team } from '../../model/Teams';
 
 
 export class CardComponent implements OnInit {
+demoTeams = this.dbs.teams;
+  flipped: boolean;
   @Input('teams') teams: Team[];
 
-  flipped:boolean;
+  constructor(private dbs: DatabaseService) {
+    // this.demoTeams = this.dbs.getTeams();
+    console.log('demo teams as follows ' + this.demoTeams);
 
-  constructor() { }
+  }
 
   ngOnInit() {
-    console.log(this.teams + "Here on card now")
+    console.log(this.teams + 'Here on card now');
   }
 
 
-  flip(){
+  flip() {
     this.flipped = !this.flipped;
   }
 }

@@ -13,12 +13,16 @@ export class AppComponent implements OnInit {
   picURL;
   pin;
 
-  constructor(private dbConn: DatabaseService){
+  constructor(private dbConn: DatabaseService) {
 
   }
 
 
+<<<<<<< HEAD
   ngOnInit(){
+=======
+  ngOnInit() {
+>>>>>>> TeamView
 
   }
 

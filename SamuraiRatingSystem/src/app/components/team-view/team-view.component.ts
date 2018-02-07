@@ -1,18 +1,22 @@
-import { Team } from './../../model/Teams';
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from '../../service/database.service';
 
 @Component({
-  selector: 'app-team-view',
+  // tslint:disable-next-line:component-selector
+  selector: 'team-view',
   templateUrl: './team-view.component.html',
   styleUrls: ['./team-view.component.css', '../../../assets/styles/mainstyle.css']
 })
+
+
 export class TeamViewComponent implements OnInit {
-  @Input('teams') teams: Team[];
-  
+  @Input() teams: any;
+
+  // @Input('teams') teams: Team[];
+
   //  teams: any = this.dbs.getTeams();
   constructor(private dbs: DatabaseService) {
-    // console.log('' + this.dbs.getTeams());
+    console.log('' + this.dbs.getTeams());
    }
 
   ngOnInit() {
