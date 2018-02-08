@@ -28,7 +28,7 @@ export class DatabaseService {
     photoURL: string;
 
     constructor(
-        private afDB: AngularFireDatabase, 
+        private afDB: AngularFireDatabase,
         private afAuth: AngularFireAuth,
         private router: Router
         ) {
@@ -44,7 +44,7 @@ export class DatabaseService {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
-    this.criteriaList = this.afDB.list("Criteria/Questions").snapshotChanges().map(changes => {
+    this.criteriaList = this.afDB.list('Criteria/Questions').snapshotChanges().map(changes => {
         return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
 
@@ -52,13 +52,13 @@ export class DatabaseService {
     this.getTeams();
 
     // for(let i =0; i<this.teams.length; i++){
-        console.log(this.teams + "These are all teams")
+        console.log(this.teams + 'These are all teams');
     // }
-    
+
     // this.createCriteria();
 
     // console.log(this.getCriteria());
-    
+
     }
 
     googlePopup() {
@@ -108,9 +108,9 @@ export class DatabaseService {
     // Must add the name and pictureURL
     createUser(id) {
 
-        this.afDB.list("/Users/").push({
+        this.afDB.list('/Users/').push({
             Teams: { TeamID: this.getTeamKey() },
-            Name: this.getUserName(), 
+            Name: this.getUserName(),
             PictureURL: this.getUserPicture(),
             User: id,
         });
@@ -140,7 +140,7 @@ export class DatabaseService {
 
                 // Adds the new team to the database if it's not there already
 
-                this.afDB.list("/Teams/").push({
+                this.afDB.list('/Teams/').push({
                     Name: name,
                     Picture: pictureURL,
                     Pin: pin,
@@ -154,11 +154,12 @@ export class DatabaseService {
 
     }
 
+
     getTeams() {
 
-        let array = [];
-        this.teamList.forEach(element => {
-            for(let i = 0; i < element.length; i++){
+      const array = [];
+      this.teamList.forEach( element => {
+        for (let i = 0; i < element.length; i++) {
 
                 // console.log(element[i].key + "key");
                 // console.log(element[i].Members);
@@ -168,133 +169,129 @@ export class DatabaseService {
                 // console.log(element[i].Rating);
 
                 array.push(
-                    new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
+                  new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
                 );
 
                 // console.log(this.teams[i].Key);
 
                 // console.log(element[i].User + "here")
-                // if(element[i].User == this.getCurrentUsersID()){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-                //     this.haveAccount = true;
-                // }
+                // if(element[i].User == this.getCurrentUsersID()){
+                  //     this.haveAccount = true;
+                  // }
+                }
+                this.teams = array;
+                console.log('my ' + this.teams + ' dogs');
+
+              });
+
             }
-            this.teams = array;
-            console.log("my " + this.teams + " dogs");
-            
-        });
 
-    }
+            // Focus on this
 
-    // Focus on this
+            getTeamMembers(key) {
 
-    getTeamMembers(key){
-
-        for (let i = 0; i < this.teams.length; i++)  {
-            console.log(this.teams[i].Members[i].UserID);
-        }
+              for (let i = 0; i < this.teams.length; i++)  {
+                console.log(this.teams[i].Members[i].UserID);
+              }
 
 
         this.teamList.forEach(element => {
-            for(let i = 0; i < element.length; i++){
+          for (let i = 0; i < element.length; i++) {
 
-                // console.log(element[i].key + "key");
-                // console.log(element[i].Members);
-                // console.log(element[i].Name);
+            // console.log(element[i].key + "key");
+            // console.log(element[i].Members);
+            // console.log(element[i].Name);
                 // console.log(element[i].Picture);
                 // console.log(element[i].Pin);
                 // console.log(element[i].Rating);
 
                 // this.teams.push(
-                //     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
-                // );
+                  //     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
+                  // );
 
-                // console.log(this.teams[i].Key);
+                  // console.log(this.teams[i].Key);
 
-                // console.log(element[i].User + "here")
-                // if(element[i].User == this.getCurrentUsersID()){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-                //     this.haveAccount = true;
-                // }
+                  // console.log(element[i].User + "here")
+                // if(element[i].User == this.getCurrentUsersID()){
+                  //     this.haveAccount = true;
+                  // }
 
-                if(element[i].key === key){
-                    
-                    for(let z = 0; i < element[i].Members.length; i++){
-                        this.members.push(
-                            new Member(element[i].Members[z].UserID)
-                        )
+                  if (element[i].key === key) {
+
+                    for (const z = 0; i < element[i].Members.length; i++) {
+                      this.members.push(
+                        new Member(element[i].Members[z].UserID)
+                      );
                     }
+                  }
                 }
-            }
-            
+
         });
-        
+
     }
 
     getCriteria() {
 
-        let array = [];
-        this.criteriaList.forEach(element => {
-            for(let i = 0; i < element.length; i++){
+      const array = [];
+      this.criteriaList.forEach(element => {
+            for (let i = 0; i < element.length; i++) {
 
                 array.push(
-                    new Criteria(element[i].Question)
-                )
+                  new Criteria(element[i].Question)
+                );
 
-                console.log(element[i].Question)
+                console.log(element[i].Question);
 
-            }
-            this.criteria = array;
-            console.log("whuu " + this.criteria + " shem!")
-        });
+              }
+              this.criteria = array;
+              console.log('whuu ' + this.criteria + ' shem!');
+            });
 
-    }
+          }
 
     // Don't run this again
-    createCriteria(question){
-        this.afDB.list("/Criteria/Questions").push({ 
-            Question: 'What do you feed dogs' 
-        });
-    }
+    createCriteria(question) {
+      this.afDB.list('/Criteria/Questions').push({
+            Question: 'What do you feed dogs'
+          });
+        }
 
-    deleteCriteria(key){
+        deleteCriteria(key) {
 
-    }
+        }
 
-    getCurrentUsersID() {
+        getCurrentUsersID() {
         return this.afAuth.auth.currentUser.uid;
-    }
+      }
 
     getUserName()  {
-        return this.afAuth.auth.currentUser.displayName;
+      return this.afAuth.auth.currentUser.displayName;
     }
 
     // This is the URL ne broes, just saying you know
     getUserPicture()  {
-        return this.afAuth.auth.currentUser.photoURL;
+      return this.afAuth.auth.currentUser.photoURL;
     }
 
     setTeamKey(key)  {
-        this.teamKey = key;
+      this.teamKey = key;
     }
 
     getTeamKey()  {
         return this.teamKey;
-    }
+      }
 
-    logout() {
+      logout() {
         this.afAuth.auth.signOut().then(() => {
-            this.router.navigate(['/login']);
+          this.router.navigate(['/login']);
         });
     }
 
 
-
-
-    // getmyteam() {
-      // this.afDB.list('/Teams/' + this.getTeamKey() + '/')
-
-    //   return this.http.get(this.url)
-    //   .map(response => response.json())
-    //   .catch(this.handleError);
-    // }
+    getAllTeams() {
+      return this.afDB.list('/teams');
+    }
+ 
 }
+
 

@@ -7,7 +7,7 @@ import { DatabaseService } from './service/database.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
   title = 'app';
   name;
   picURL;
@@ -18,15 +18,6 @@ export class AppComponent implements OnInit {
   }
 
 
-<<<<<<< HEAD
-  ngOnInit(){
-=======
-  ngOnInit() {
->>>>>>> TeamView
-
-  }
-
-  // login(){
   //   console.log('reaching')
   //   console.log(this.dbConn.teams + "Another attempt");
   //   console.log(this.dbConn.getCriteria() + "Crying is not a habit")

@@ -9,11 +9,20 @@
   border: dashed 7px #1a0455;
   padding: 0px;
 }
-.hrline{
-  
+.members{
+  list-style: none;
 }
 
 
- 
+.member{
+  text-decoration: none;
+  color: #FFA000;
+}
+.member:hover{
+  opacity: 0.6px;
+  color: #000051;
+}
 
-
+.moreBtn{
+  background-color: #000051;
+}

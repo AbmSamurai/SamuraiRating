@@ -16,7 +16,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.teams = this.dbConn.teams;
-    console.log(this.teams + "On dashboard now")
+    console.log(this.teams + 'On dashboard now');
   }
-
 }

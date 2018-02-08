@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { print } from 'util';
 import { DatabaseService } from '../../service/database.service';
 import { Team } from '../../model/Teams';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -12,22 +13,27 @@ import { Team } from '../../model/Teams';
 
 
 export class CardComponent implements OnInit {
-demoTeams = this.dbs.teams;
   flipped: boolean;
   @Input('teams') teams: Team[];
 
-  constructor(private dbs: DatabaseService) {
-    // this.demoTeams = this.dbs.getTeams();
-    console.log('demo teams as follows ' + this.demoTeams);
+  constructor(
+    private dbs: DatabaseService,
+    private router: Router,
+  ) {
 
   }
 
   ngOnInit() {
     console.log(this.teams + 'Here on card now');
+    // console.log('demo teams as follows ' + this.demoTeams);
   }
 
 
   flip() {
     this.flipped = !this.flipped;
+  }
+
+  sendTeam( teamKey) {
+    this.router.navigate(['/teamView'], { queryParams: { team:  teamKey } });
   }
 }
