@@ -1,48 +1,28 @@
 <div class="container">
 
-  <form [formGroup]="ratingForm">
+  <form [formGroup]="ratingForm" (ngSubmit)="submitRating(ratingForm.value)">
     <div class="rating row" *ngFor="let x of criteria;index as l">
       <div class="question row">
-        This is a Question
+        {{x}}.This is a Question
       </div>
+
       <fieldset formArrayName="stars" class="rating">
-<ng-container *ngFor="let num of [5,4,3,2,1]">
 
-  <input name="star" [id]="'star'+(num)" [value]="num" type="radio" />
+        <ng-container *ngFor="let num of [4,3,2,1,0]">
 
-  <label class="full" [for]="'star'+(num)"></label>
+          <input [name]="l" [formControlName]="l" [id]="'star'+(starIds[num]*(l+1))" [value]="num+1" type="radio" />
+          
+          <label class="full" [for]="'star'+(starIds[num]*(l+1))"></label>
 
-</ng-container>
+        </ng-container>
 
-        <!--  <ng-container >
-
-          <input [name]="l" [formControlName]="l" [id]="'star'+l" value="1" type="radio" />
-
-          <label class="full" [for]="'star'+l"></label>
-
-          <input [name]="l" [formControlName]="l" [id]="'star'+(l*11)" value="2" type="radio" />
-
-          <label class="full" [for]="'star'+(l*11)"></label>
-
-          <input [name]="l" [formControlName]="l" [id]="'star'+(l*11)" value="3" type="radio" />
-
-          <label class="full" [for]="'star'+(l*11)"></label>
-
-          <input [name]="l" [formControlName]="l" [id]="'star'+(l*11)" value="4" type="radio" />
-
-          <label class="full" [for]="'star'+(l*11)"></label>
-
-          <input [name]="l" [formControlName]="l" [id]="'star'+(l*11)" value="5" type="radio" />
-          <label class="full" [for]="'star'+(l*11)"></label> 
-
-</ng-container>-->
 
       </fieldset>
     </div>
-    {{ratingForm.value | json}}
-    <textarea name="" class="form-control comment-block" id="" cols="30" rows="10"></textarea>
+    
+    <textarea name="" formControlName="comment" class="form-control comment-block" id="" cols="30" rows="10"></textarea>
 
-    <button class="btn button" style="float:right">Submit</button>
+    <button class="btn Review-button" style="float:right" [disabled]='!ratingForm.valid' type="submit">Submit</button>
 
   </form>
 
@@ -50,14 +30,3 @@
 </div>
 
 
-<div class="rating">
-
-  <ng-container *ngFor="let num of [5,4,3,2,1]">
-
-    <input name="star" [id]="'star'+(num)" [value]="num" type="radio" />
-
-    <label class="full" [for]="'star'+(num)"></label>
-
-  </ng-container>
-
-</div>
