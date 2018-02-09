@@ -4,7 +4,7 @@ import { print } from 'util';
 import { DatabaseService } from '../../service/database.service';
 import { Team } from '../../model/Teams';
 import { Observable } from '@firebase/util/dist/esm/src/subscribe';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
@@ -17,6 +17,11 @@ export class CardComponent implements OnInit {
   @Input('teams') team;
 
   flipped: boolean;
+constructor(
+  private dbs: DatabaseService,
+  private router: Router,
+  // private route: Routes,
+) {}
 
   ngOnInit() {
     console.log(this.team, 'Here on card now');
@@ -27,8 +32,12 @@ export class CardComponent implements OnInit {
     this.flipped = !this.flipped;
   }
 
+
+
+sendTeam(specifiedTeam) {
+  console.log('clicked on this team:', specifiedTeam.Name);
+  this.dbs.SneakedTeam = specifiedTeam;
+  this.router.navigate(['teamView']);
+  }
+
 }
-
-
-
-  

@@ -4,6 +4,7 @@ import { Team } from '../../model/Teams';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { element } from 'protractor';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,23 +16,26 @@ import { element } from 'protractor';
   ]
 })
 export class TeamViewComponent implements OnInit {
-
-  @Input('teams') teams: Team[];
-
-  // @Input('teams') teams: Team[];
+   givenTeam;
 
   constructor(
     private dbs: DatabaseService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {
   // this.assignTeamDetails();
+this.view(this.dbs.SneakedTeam);
+
   }
 
   ngOnInit() {
-  this.dbs.assignTeamDetails();
-  }
+      }
 
+view(team: Team) {
+this.givenTeam = team;
+}
 
+dash() {
+  this.router.navigate(['dashboard']);
+}
 
 }

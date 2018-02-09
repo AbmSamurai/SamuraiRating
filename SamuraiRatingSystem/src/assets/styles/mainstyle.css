@@ -14,7 +14,7 @@ padding-top: 15px;
  .team-ID{
       height: 159px;
     width: 159px;
-  border-radius: 134px;
+  border-radius: 50px;
   border: dashed 4px #FFD149;
   padding: 0px;
 }
@@ -30,18 +30,17 @@ padding-top: 15px;
  }
 
 .team-ID{
-    height: 160px;
-    border-radius: 146px;
+    height: 136px;
+    /* border-radius: 146px; */
 }
 
 }
 /* ------------------------------------------------- */
 @media (min-width: 992px) {
-.teamcard{
 
- }
  .team-ID{
-    height: 183px;
+  height: 257px;
+  border-radius: 76px;
 }
 
 
@@ -52,9 +51,5 @@ padding-top: 15px;
  .team-ID{
   height: 244px;
 }
-
-
-
-
 
 }

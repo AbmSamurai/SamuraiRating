@@ -20,7 +20,7 @@ export class DatabaseService {
   public user$: Observable<Firebase.User>;
 
   allTeams;
-  givenTeamKey;
+ public SneakedTeam;
 
 
 

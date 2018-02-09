@@ -25,4 +25,7 @@
 
 .moreBtn{
   background-color: #000051;
+  flex-wrap:   wrap ;
+  cursor: default;
+  color: #007bff;
 }
