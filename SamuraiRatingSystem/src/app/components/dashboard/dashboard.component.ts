@@ -1,6 +1,9 @@
 import { DatabaseService } from './../../service/database.service';
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../model/Teams';
+import { Observable } from "rxjs/Rx";
+import 'rxjs/add/operator/map';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -8,15 +11,14 @@ import { Team } from '../../model/Teams';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  teams: Team[] = [];
+  teams: Observable<Team[]>;
 
   constructor(private dbConn: DatabaseService) {
     dbConn.getTeams();
    }
 
   ngOnInit() {
-    this.teams = this.dbConn.teams;
-    console.log(this.teams + "On dashboard now")
+    this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
   }
 
 }

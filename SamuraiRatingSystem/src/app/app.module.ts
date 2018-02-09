@@ -18,6 +18,8 @@ import { PersonRegistrationComponent } from './components/registration/person-re
 import { AdminRegistrationComponent } from './components/registration/admin-registration/admin-registration.component';
 import { DatabaseService } from './service/database.service';
 import { AuthGuard } from './service/auth-guard.service';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { SafePipe } from './pipe/safe.pipe';
 
 
 export const config  = {
@@ -42,6 +44,7 @@ export const config  = {
     PersonRegistrationComponent,
     AdminRegistrationComponent,
     TeamViewComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,8 @@ export const config  = {
     AngularFireAuthModule,
     FormsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFirestoreModule,
   ], 
   providers: [
     DatabaseService,
