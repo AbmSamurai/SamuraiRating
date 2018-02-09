@@ -6,6 +6,7 @@ import {
   FormControl,
   FormArray
 } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-team-review",
   templateUrl: "./team-review.component.html",
@@ -15,16 +16,22 @@ export class TeamReviewComponent implements OnInit {
   ratingForm: FormGroup;
   rating = 0;
   criteria = [1, 2, 3, 4, 5];
+  Team: String;
   Stars: FormArray = new FormArray([]);
-  starIds: Number[] = [];
+  starIds: number[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     /* This is collecting the */
+    this.Team = this.route.snapshot.paramMap.get("teamname");
+    console.log(this.Team);
     for (let i = 0; i < this.criteria.length; i++) {
       this.Stars.push(new FormControl(null, [Validators.required]));
       this.starIds.push(Math.round(Math.random() * (999 - 100 - 1)));
     }
-    console.log(this.starIds);
 
     this.ratingForm = fb.group({
       comment: [

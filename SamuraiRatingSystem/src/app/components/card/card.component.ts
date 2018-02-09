@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../model/Teams';
@@ -16,7 +17,7 @@ export class CardComponent implements OnInit {
   flipped:boolean;
   
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     console.log(this.team, "Here on card now")
@@ -27,5 +28,10 @@ export class CardComponent implements OnInit {
     this.flipped = !this.flipped;
   }
 
+  StartReview(teamName:string){
+
+    this.router.navigate(['review',teamName])
+
+  }
 
 }

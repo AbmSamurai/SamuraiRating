@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -20,6 +21,7 @@ import { DatabaseService } from './service/database.service';
 import { AuthGuard } from './service/auth-guard.service';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { SafePipe } from './pipe/safe.pipe';
+import { TeamReviewComponent } from './components/team-review/team-review.component';
 
 
 export const config  = {
@@ -42,16 +44,16 @@ export const config  = {
     RegistrationComponent,
     TeamRegistrationComponent,
     PersonRegistrationComponent,
-    AdminRegistrationComponent,
+    AdminRegistrationComponent,TeamReviewComponent,
     TeamViewComponent,
-    SafePipe,
+    SafePipe
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    FormsModule,
+    FormsModule,ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     AngularFirestoreModule,

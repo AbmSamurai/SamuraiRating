@@ -1,3 +1,4 @@
+import { TeamReviewComponent } from './components/team-review/team-review.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
@@ -29,6 +30,9 @@ const routes: Routes = [
     component: TeamViewComponent,
         // canActivate: [AuthGuard]
 
+  },{
+    path:'review/:teamname',
+    component:TeamReviewComponent
   }
 ];
 
