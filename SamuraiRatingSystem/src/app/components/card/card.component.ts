@@ -1,6 +1,7 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../model/Teams';
+import { Observable } from '@firebase/util/dist/esm/src/subscribe';
 
 @Component({
   selector: 'app-card',
@@ -10,18 +11,21 @@ import { Team } from '../../model/Teams';
 
 
 export class CardComponent implements OnInit {
-  @Input('teams') teams: Team[];
+  @Input('teams') team;
 
   flipped:boolean;
+  
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.teams + "Here on card now")
+    console.log(this.team, "Here on card now")
   }
 
 
   flip(){
     this.flipped = !this.flipped;
   }
+
+
 }
