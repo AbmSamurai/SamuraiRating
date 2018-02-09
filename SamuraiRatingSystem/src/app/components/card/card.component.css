@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    
+
 }
 
 
@@ -29,7 +29,7 @@ img{
     border:1px solid black;
     display: flex;
     justify-content: center;
-} 
+}
 
 .card-btn{
     width: 70px;
@@ -48,7 +48,9 @@ img{
     width: 150px;
 }
 
-
+.submit-button:hover{
+  opacity:0.6 ;
+}
 
 .submit-text{
     color: #fff !important;
@@ -89,7 +91,7 @@ img{
 	position: absolute;
 	top: 0;
     left: 0;
-    
+
 }
 
 /* front pane, placed above back */
