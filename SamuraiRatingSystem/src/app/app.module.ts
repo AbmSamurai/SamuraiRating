@@ -1,17 +1,24 @@
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
-import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
-
-
+import { AngularFireModule } from 'angularfire2';
+import { Observable } from 'rxjs/Observable';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
-import { AngularFireModule } from 'angularfire2';
-import { TeamReviewComponent } from './components/team-review/team-review.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { TeamViewComponent } from './components/team-view/team-view.component';
+import { NavComponent } from './components/nav/nav.component';
+import { CardComponent } from './components/card/card.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { TeamRegistrationComponent } from './components/registration/team-registration/team-registration.component';
+import { PersonRegistrationComponent } from './components/registration/person-registration/person-registration.component';
+import { AdminRegistrationComponent } from './components/registration/admin-registration/admin-registration.component';
 import { DatabaseService } from './service/database.service';
+import { AuthGuard } from './service/auth-guard.service';
+
 
 export const config  = {
   apiKey: 'AIzaSyADdYbrD14h7lBjRckwdUh5PoTwflXeVWk',
@@ -27,7 +34,14 @@ export const config  = {
   declarations: [
     AppComponent,
     LogInComponent,
-    TeamReviewComponent
+    DashboardComponent,
+    NavComponent,
+    CardComponent,
+    RegistrationComponent,
+    TeamRegistrationComponent,
+    PersonRegistrationComponent,
+    AdminRegistrationComponent,
+    TeamViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,11 +49,13 @@ export const config  = {
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     FormsModule,
-    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule
-  ],
-  providers: [DatabaseService],
+  ], 
+  providers: [
+    DatabaseService,
+    AuthGuard
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

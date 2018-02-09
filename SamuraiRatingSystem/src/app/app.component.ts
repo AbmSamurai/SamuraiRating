@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Question } from './model/Criteria';
+import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from './service/database.service';
 
 @Component({
@@ -6,7 +7,7 @@ import { DatabaseService } from './service/database.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   name;
   picURL;
@@ -16,13 +17,21 @@ export class AppComponent {
 
   }
 
-  login(){
-    console.log('reaching')
-    this.dbConn.googlePopup();
+
+  ngOnInit(){
+   
   }
 
-  createTeam(){
-    this.dbConn.createTeam(this.name, this.picURL, this.pin)
+  // login(){
+  //   console.log('reaching')
+  //   console.log(this.dbConn.teams + "Another attempt");
+  //   console.log(this.dbConn.getCriteria() + "Crying is not a habit")
+  //   this.dbConn.googlePopup();
     
-  }
+  // }
+
+  // createTeam() {
+  //   this.dbConn.createTeam(this.name, this.picURL, this.pin);
+
+  // }
 }

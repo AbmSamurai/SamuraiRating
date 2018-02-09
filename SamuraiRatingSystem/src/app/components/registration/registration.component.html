@@ -1,0 +1,16 @@
+<div class="tabbed-container">
+  <div class="tabs">
+      <div class="register-tab m-0 p-0" (click) = 'setStep(0)'>Admin-registration</div>
+      <div class="register-tab middle-tab m-0 p-0" (click) = 'setStep(1)'>Person-registration</div>
+      <div class="register-tab m-0 p-0" (click) = 'setStep(2)'>Team-registration</div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center ">
+      <app-admin-registration *ngIf='registerPart == 0'></app-admin-registration>
+      <app-person-registration *ngIf='registerPart == 1'></app-person-registration>
+      <app-team-registration *ngIf='registerPart == 2'></app-team-registration>
+</div>
+
+
+

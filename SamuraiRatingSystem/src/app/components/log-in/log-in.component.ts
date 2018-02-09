@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatabaseService } from '../../service/database.service';
 
 @Component({
   selector: 'app-log-in',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogInComponent implements OnInit {
 
-  constructor() { }
+  constructor( private dbauth: DatabaseService ) { }
 
   ngOnInit() {
+  }
+
+
+  login() {
+    this.dbauth.googlePopup();
   }
 
 }
