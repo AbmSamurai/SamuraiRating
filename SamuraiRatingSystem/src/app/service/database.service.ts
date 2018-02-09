@@ -6,9 +6,12 @@ import { element } from 'protractor';
 import { Injectable } from '@angular/core';
 import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as Firebase from 'firebase/app';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { User } from '@firebase/auth-types';
 // import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
 
@@ -32,8 +35,11 @@ export class DatabaseService {
     displayName: string;
     photoURL: string;
 
+    teams_collectionRef = this.afs.collection<Team>('Teams');
+    criteria_collectionRef = this.afs.collection<Criteria>('criteria');
+    user_collectionRef = this.afs.collection<User>('users');
     constructor(
-        private afDB: AngularFireDatabase,
+        private afs: AngularFirestore,
         private afAuth: AngularFireAuth,
         private router: Router,
         private route: ActivatedRoute
@@ -41,40 +47,49 @@ export class DatabaseService {
         ) {
     this.user$ = afAuth.authState;
 
-    // Lists all the users in the DB
-    this.userList = this.afDB.list('Users').snapshotChanges().map(changes => {
-        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
+    // // Lists all the users in the DB
+    // this.userList = this.afs.collection('Users').snapshotChanges().map(changes => {
+    //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    // });
 
-    // Lists all the teams in the DB
-    this.teamList = this.afDB.list('Teams').snapshotChanges().map(changes => {
-        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
+    // // Lists all the teams in the DB
+    // this.teamList = this.afs.collection('Teams').snapshotChanges().map(changes => {
+    //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    // });
 
-    this.criteriaList = this.afDB.list('Criteria/Questions').snapshotChanges().map(changes => {
-        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
-
-
-    this.getTeams();
-
-    // for(let i =0; i<this.teams.length; i++){
-        console.log(this.teams + 'These are all teams');
-    // }
-
-    // this.createCriteria();
-
-    // console.log(this.getCriteria());
-
+    // this.criteriaList = this.afs.collection("Criteria/Questions").snapshotChanges().map(changes => {
+    //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    // });
     }
 
+    getTeams(): Observable<Team[]> {
+       return this.teams_collectionRef.valueChanges();
+    }
+
+    getUsers() {
+        return this.user_collectionRef.valueChanges();
+    }
+
+    getCriteria() {
+        return this.criteria_collectionRef.valueChanges();
+    }
+
+
+
+
+    getData(collection: string,  variable: string, operator: any, value: any) {
+        return  this.afs.collection(collection, ref => ref.where(variable, operator, value))
+        .valueChanges().map(response => {
+          // console.log(response);
+          return response;
+        });
+    }
+
+
     googlePopup() {
-
         const prov = new Firebase.auth.GoogleAuthProvider();
-
         this.afAuth.auth.signInWithPopup(prov).then(
             (success) => {
-
                 // alert('User added');
                 let flag: Boolean;
                 // tslint:disable-next-line:no-shadowed-variable
@@ -101,11 +116,6 @@ export class DatabaseService {
                     }
                 });
 
-                // this.checkUser();
-                this.getTeams();
-
-                // this.afDB.list('Users').set({ Teams: { Name: '-dskvlkjnsjvnseuvnsnjdnv' }, User: 'Lihle' });
-
         }).catch(
             (err) => {
                 console.log(err.message);
@@ -115,83 +125,51 @@ export class DatabaseService {
     // Must add the name and pictureURL
     createUser(id) {
 
-        this.afDB.list('/Users/').push({
-            Teams: { TeamID: this.getTeamKey() },
-            Name: this.getUserName(),
-            PictureURL: this.getUserPicture(),
-            User: id,
-        });
-
-        // this.afDB.list("/Teams/" + this.getTeamKey() + "/Members/").push({
-        //     Members: { UserID: id },
+        // this.afs.collection("/Users/").push({
+        //     Teams: { TeamID: this.getTeamKey() },
+        //     Name: this.getUserName(),
+        //     PictureURL: this.getUserPicture(),
+        //     User: id,
         // });
+
+        // // this.afs.collection("/Teams/" + this.getTeamKey() + "/Members/").push({
+        // //     Members: { UserID: id },
+        // // });
     }
 
-    createTeam(name: string, pictureURL: string, pin: string) {
+    createTeam(team: Team) {
 
-        let flag: Boolean;
-        // tslint:disable-next-line:no-shadowed-variable
-        this.teamList.forEach(element => {
-            for (let i = 0; i < element.length; i++) {
-
-                console.log(element[i].Name + 'Name of team from DB');
-
-                if (element[i].Name === name) {
-                    flag = false;
-                    break;
-                }
-            }
-
-            if (flag === undefined) {
-                alert('Team created');
-
-                // Adds the new team to the database if it's not there already
-
-                this.afDB.list('/Teams/').push({
-                    Name: name,
-                    Picture: pictureURL,
-                    Pin: pin,
-                    Rating: 0
-                });
-            } else {
-                alert('Team already exists');
-
-            }
+        this.teams_collectionRef.doc('' + team.Name).set(Object.assign({}, team)).then(success => {
+            console.log('success!');
+        }).catch(err => {
+            console.log(err.message);
         });
 
+        // let flag: Boolean;
+        // // tslint:disable-next-line:no-shadowed-variable
+        // this.teamList.forEach(element => {
+        //     for (let i = 0; i < element.length; i++) {
+        //         console.log(element[i].Name + 'Name of team from DB');
+        //         if (element[i].Name === name) {
+        //             flag = false;
+        //             break;
+        //         }
+        //     }
+        //     if (flag === undefined) {
+        //         alert('Team created');
+        //         // Adds the new team to the database if it's not there already
+        //         this.afs.collection("/Teams/").push({
+        //             Name: name,
+        //             Picture: pictureURL,
+        //             Pin: pin,
+        //             Rating: 0
+        //         });
+        //     } else {
+        //         alert('Team already exists');
+        //     }
+        // });
+
     }
-
-
-    getTeams() {
-
-      const array = [];
-      this.teamList.forEach( element => {
-        for (let i = 0; i < element.length; i++) {
-
-                // console.log(element[i].key + "key");
-                // console.log(element[i].Members);
-                // console.log(element[i].Name);
-                // console.log(element[i].Picture);
-                // console.log(element[i].Pin);
-                // console.log(element[i].Rating);
-
-                array.push(
-                  new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
-                );
-
-                // console.log(this.teams[i].Key);
-
-                // console.log(element[i].User + "here")
-                // if(element[i].User == this.getCurrentUsersID()){
-                  //     this.haveAccount = true;
-                  // }
-                }
-                this.teams = array;
-                console.log('my ' + this.teams + ' dogs');
-
-              });
-
-            }
 
             // Focus on this
 
@@ -202,6 +180,7 @@ export class DatabaseService {
               }
 
 
+        // tslint:disable-next-line:no-shadowed-variable
         this.teamList.forEach(element => {
           for (let i = 0; i < element.length; i++) {
 
@@ -213,7 +192,8 @@ export class DatabaseService {
                 // console.log(element[i].Rating);
 
                 // this.teams.push(
-                  //     new Team(element[i].key, element[i].Members, element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
+                  //     new Team(element[i].key, element[i].Members,
+                  //  element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
                   // );
 
                   // console.log(this.teams[i].Key);
@@ -235,33 +215,33 @@ export class DatabaseService {
 
         });
 
-    }
+      }
 
-    getCriteria() {
+    // getCriteria() {
 
-      const array = [];
-      this.criteriaList.forEach(element => {
-            for (let i = 0; i < element.length; i++) {
+    //     let array = [];
+    //     this.criteriaList.forEach(element => {
+    //         for(let i = 0; i < element.length; i++){
 
-                array.push(
-                  new Criteria(element[i].Question)
-                );
+    //             array.push(
+    //                 new Criteria(element[i].Question)
+    //             )
 
-                console.log(element[i].Question);
+    //             console.log(element[i].Question)
 
-              }
-              this.criteria = array;
-              console.log('whuu ' + this.criteria + ' shem!');
-            });
+    //         }
+    //         this.criteria = array;
+    //         console.log("whuu " + this.criteria + " shem!")
+    //     });
 
-          }
+    // }
 
     // Don't run this again
     createCriteria(question) {
-      this.afDB.list('/Criteria/Questions').push({
-            Question: 'What do you feed dogs'
-          });
-        }
+        // this.afs.collection("/Criteria/Questions").push({
+        //     Question: 'What do you feed dogs'
+        // });
+    }
 
         deleteCriteria(key) {
 
@@ -271,20 +251,20 @@ export class DatabaseService {
         return this.afAuth.auth.currentUser.uid;
       }
 
-    getUserName()  {
+    getUserName() {
       return this.afAuth.auth.currentUser.displayName;
     }
 
     // This is the URL ne broes, just saying you know
-    getUserPicture()  {
+    getUserPicture() {
       return this.afAuth.auth.currentUser.photoURL;
     }
 
-    setTeamKey(key)  {
+    setTeamKey(key) {
       this.teamKey = key;
     }
 
-    getTeamKey()  {
+    getTeamKey() {
         return this.teamKey;
       }
 
@@ -295,20 +275,22 @@ export class DatabaseService {
     }
 
 
-    getAllTeams() {
-      this.allTeams = this.afDB.list('/Users');
-      console.log('got this from getall: ' + this.allTeams.Name);
-      return this.allTeams;
+    // getAllTeams() {
+    //   this.allTeams = this.afDB.list('/Users');
+    //   console.log('got this from getall: ' + this.allTeams.Name);
+    //   return this.allTeams;
 
-    }
+    // }
 
+    // getmyteam() {
+      // this.afs.collection('/Teams/' + this.getTeamKey() + '/')
 
-    assignTeamDetails() {
-      this.givenTeamKey = this.route.queryParams.subscribe(params => {
-        this.givenTeamKey = params['team'];
-      });
-       this.getAllTeams();
-      console.log('All teames in teamview: ' + this.allTeams.Key);
+    // assignTeamDetails() {
+    //   this.givenTeamKey = this.route.queryParams.subscribe(params => {
+    //     this.givenTeamKey = params['team'];
+    //   });
+    //    this.getAllTeams();
+    //   console.log('All teames in teamview: ' + this.allTeams.Key);
       // tslint:disable-next-line:no-shadowed-variable
       // this.allTeams.forEach(element => {
       //   for (let i = 0; i < element.length; i++) {
@@ -317,8 +299,8 @@ export class DatabaseService {
       //     }
       //   }
       // });
-      }
+      // }
 
-}
+  }
 
 

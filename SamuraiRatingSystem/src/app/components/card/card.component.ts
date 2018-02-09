@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { print } from 'util';
 import { DatabaseService } from '../../service/database.service';
 import { Team } from '../../model/Teams';
-import { Router } from '@angular/router';
+import { Observable } from '@firebase/util/dist/esm/src/subscribe';
 
 @Component({
   selector: 'app-card',
@@ -13,19 +13,13 @@ import { Router } from '@angular/router';
 
 
 export class CardComponent implements OnInit {
+  // tslint:disable-next-line:no-input-rename
+  @Input('teams') team;
+
   flipped: boolean;
-  @Input('teams') teams: Team[];
-
-  constructor(
-    private dbs: DatabaseService,
-    private router: Router,
-  ) {
-
-  }
 
   ngOnInit() {
-    console.log(this.teams + 'Here on card now');
-    // console.log('demo teams as follows ' + this.demoTeams);
+    console.log(this.team, 'Here on card now');
   }
 
 
@@ -33,7 +27,8 @@ export class CardComponent implements OnInit {
     this.flipped = !this.flipped;
   }
 
-  sendTeam( teamKey) {
-    this.router.navigate(['/teamView'], { queryParams: { team:  teamKey } });
-  }
 }
+
+
+
+  

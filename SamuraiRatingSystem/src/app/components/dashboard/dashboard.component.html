@@ -1,6 +1,5 @@
 <div class="card-grid d-inline-flex justify-content-around">
-  <app-card [teams] = "teams" class="crd"></app-card>
-  <app-card  class="crd"></app-card>
+  <app-card *ngFor ='let team of teams | async' [teams] = "team" class="crd"></app-card>
   <!-- <app-card class="crd"></app-card>
   <app-card class="crd"></app-card> -->
 </div>

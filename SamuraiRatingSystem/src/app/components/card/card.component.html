@@ -1,11 +1,11 @@
 
-  <div *ngFor = "let team of teams" class="flip-container" ontouchstart="this.classList.toggle('hover');">
+  <div  class="flip-container" ontouchstart="this.classList.toggle('hover');">
     <div class="flipper">
       <div class="front">
         <div class="card-container">
           <h4 class="raleway font-thin">{{ team.Name }}</h4>
           <div class="team-logo">
-            <img src="{{ team.Picture }}" alt="../../../../assets/images/Carrot.png">
+            <img src="{{ team.PictureUrl | safe}}">
           </div>
           <h4 class="raleway font-thin">Points: {{ team.Rating }}</h4>
         </div>
