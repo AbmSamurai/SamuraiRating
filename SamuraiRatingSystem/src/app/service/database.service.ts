@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Criteria, Question } from './../model/Criteria';
 import { Team } from './../model/Teams';
 import { Member } from './../model/Member';
@@ -16,6 +16,11 @@ import * as Firebase from 'firebase/app';
 export class DatabaseService {
   public user$: Observable<Firebase.User>;
 
+  allTeams;
+  givenTeamKey;
+
+
+
     userList;
     teamList;
     criteriaList;
@@ -30,7 +35,9 @@ export class DatabaseService {
     constructor(
         private afDB: AngularFireDatabase,
         private afAuth: AngularFireAuth,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
+
         ) {
     this.user$ = afAuth.authState;
 
@@ -289,9 +296,29 @@ export class DatabaseService {
 
 
     getAllTeams() {
-      return this.afDB.list('/teams');
+      this.allTeams = this.afDB.list('/Users');
+      console.log('got this from getall: ' + this.allTeams.Name);
+      return this.allTeams;
+
     }
- 
+
+
+    assignTeamDetails() {
+      this.givenTeamKey = this.route.queryParams.subscribe(params => {
+        this.givenTeamKey = params['team'];
+      });
+       this.getAllTeams();
+      console.log('All teames in teamview: ' + this.allTeams.Key);
+      // tslint:disable-next-line:no-shadowed-variable
+      // this.allTeams.forEach(element => {
+      //   for (let i = 0; i < element.length; i++) {
+      //     if (element[i].key === this.givenTeamKey) {
+      //       this.givenTeamKey = element[i];
+      //     }
+      //   }
+      // });
+      }
+
 }
 
 

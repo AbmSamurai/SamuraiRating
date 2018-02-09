@@ -15,8 +15,7 @@ import { element } from 'protractor';
   ]
 })
 export class TeamViewComponent implements OnInit {
-  allTeams;
-  givenTeamKey;
+
   @Input('teams') teams: Team[];
 
   // @Input('teams') teams: Team[];
@@ -25,25 +24,14 @@ export class TeamViewComponent implements OnInit {
     private dbs: DatabaseService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+  // this.assignTeamDetails();
+  }
 
   ngOnInit() {
-  this.assignTeamDetails();
+  this.dbs.assignTeamDetails();
   }
 
-assignTeamDetails() {
-this.givenTeamKey = this.route.queryParams.subscribe(params => {
-  this.givenTeamKey = params['team'];
-});
-this.allTeams = this.dbs.getAllTeams();
-// tslint:disable-next-line:no-shadowed-variable
-this.allTeams.forEach(element => {
-  for (let i = 0; i < element.length; i++) {
-    if (element[i].key === this.givenTeamKey) {
-      this.givenTeamKey = element[i];
-    }
-  }
-});
-}
+
 
 }
