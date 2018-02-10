@@ -12,6 +12,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as Firebase from 'firebase/app';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from '@firebase/auth-types';
+import { AngularFireStorage } from 'angularfire2/storage';
 // import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
 
@@ -34,6 +35,9 @@ export class DatabaseService {
     members: Member[] = [];
     displayName: string;
     photoURL: string;
+    uploadPercent: Observable<number>;
+    downloadURL: Observable<string>;
+    filePath: string;
 
     teams_collectionRef = this.afs.collection<Team>('Teams');
     criteria_collectionRef = this.afs.collection<Criteria>('criteria');
@@ -42,8 +46,7 @@ export class DatabaseService {
         private afs: AngularFirestore,
         private afAuth: AngularFireAuth,
         private router: Router,
-        private route: ActivatedRoute
-
+        private storage: AngularFireStorage,
         ) {
     this.user$ = afAuth.authState;
 
@@ -77,7 +80,31 @@ export class DatabaseService {
 
 
 
-    getData(collection: string,  variable: string, operator: any, value: any) {
+  
+    uploadProfilePicture(event, name){
+        const file = event.target.files[0];
+        this.filePath = ''+ name + '-logo';
+        const task = this.storage.upload(this.filePath, file);
+
+        this.uploadPercent = task.percentageChanges();
+        this.downloadURL = task.downloadURL();
+    }
+
+    getFilePath(){
+        return this.filePath;
+    }
+
+    getUploadPercentage(){
+        return this.uploadPercent;
+    }
+
+
+    getDownloadUrl(){
+        return this.downloadURL;
+    }
+
+
+    getData(collection: string,  variable:string, operator: any, value: any){
         return  this.afs.collection(collection, ref => ref.where(variable, operator, value))
         .valueChanges().map(response => {
           // console.log(response);

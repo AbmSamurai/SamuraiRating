@@ -32,6 +32,10 @@ constructor(
     this.flipped = !this.flipped;
   }
 
+  Review(name: string){
+    
+  } 
+
 
 
 sendTeam(specifiedTeam) {
