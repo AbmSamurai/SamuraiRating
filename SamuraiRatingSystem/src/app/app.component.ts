@@ -7,27 +7,22 @@ import { DatabaseService } from './service/database.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
   title = 'app';
   name;
   picURL;
   pin;
 
-  constructor(private dbConn: DatabaseService){
+  constructor(private dbConn: DatabaseService) {
 
   }
 
 
-  ngOnInit(){
-   
-  }
-
-  // login(){
   //   console.log('reaching')
   //   console.log(this.dbConn.teams + "Another attempt");
   //   console.log(this.dbConn.getCriteria() + "Crying is not a habit")
   //   this.dbConn.googlePopup();
-    
+
   // }
 
   // createTeam() {

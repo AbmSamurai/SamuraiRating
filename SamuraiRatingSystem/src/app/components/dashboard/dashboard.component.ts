@@ -20,5 +20,4 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
   }
-
 }
