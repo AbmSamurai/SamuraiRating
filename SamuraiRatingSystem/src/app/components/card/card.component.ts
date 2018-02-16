@@ -25,7 +25,7 @@ constructor(
 ) {}
 
   ngOnInit() {
-    console.log(this.team, 'Here on card now');
+    // console.log(this.team, 'Here on card now');
   }
 
 
@@ -36,6 +36,8 @@ constructor(
   StartReview(selectedTeam:string){
     console.log(selectedTeam,"is raedy for review");
     this.router.navigate(['review/',selectedTeam])
+  }
+
   }
 
 
