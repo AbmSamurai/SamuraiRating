@@ -5,7 +5,7 @@ import { print } from 'util';
 import { DatabaseService } from '../../service/database.service';
 import { Team } from '../../model/Teams';
 import { Observable } from '@firebase/util/dist/esm/src/subscribe';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
@@ -33,7 +33,10 @@ constructor(
     this.flipped = !this.flipped;
   }
 
-  StartReview(teamName:string){
+  StartReview(selectedTeam:string){
+    console.log(selectedTeam,"is raedy for review");
+    this.router.navigate(['review/',selectedTeam])
+  }
 
 
 

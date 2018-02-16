@@ -1,69 +1,66 @@
- .rating {
-   border: none;
-   float: left;
-   width:100%;
-   text-align: center;
- }
+.rating {
+  border-bottom: rgba(236, 136, 22, 0.884);
+  display: inline-block;
+  text-align: center;
+}
 
- .rating>input {
-   display: none;
-   text-align: center;
+.rating > input {
+  display: none;
+  position: fixed;
+  left: 50%;
+}
 
- }
+.rating > label:before {
+  margin: 5px;
+  font-size: 2.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
 
- .rating>label:before {
-   margin: 5px;
-   font-size: 2.25em;
-   font-family: FontAwesome;
-   display: inline-block;
-   content: "\f005";
- }
+.rating > .half:before {
+  content: "\f089";
+  position: absolute;
+}
 
- .rating>.half:before {
-   content: "\f089";
-   position: absolute;
- }
+.rating > label {
+  color: #ddd;
+  float: right;
+  text-align: center;
+}
 
- .rating>label {
-   color: #ddd;
-   float: right;
-   text-align: center;
- }
+.rating > input:checked ~ label,
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+  color: #ffd700;
+}
 
- .rating>input:checked~label,
- .rating:not(:checked)>label:hover,
- .rating:not(:checked)>label:hover~label {
-   color: #FFD700;
- 
-
- }
-
- .rating>input:checked+label:hover,
- .rating>input:checked~label:hover,
- .rating>label:hover~input:checked~label,
- selection .rating>input:checked~label:hover~label {
-   color: #FFED85;
-
-
- }
-
-
+.rating > input:checked + label:hover,
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label,
+selection .rating > input:checked ~ label:hover ~ label {
+  color: #ffed85;
+}
 
 .question {
-color: rgba(236, 136, 22, 0.884);
-
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-    width: 100%;
+  color: rgba(236, 136, 22, 0.884);
+  position: relative;
+  top: 10%;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  width: 100%;
 }
 
-.comment-block{
-    box-shadow: 5px 5px rgba(236, 136, 22, 0.884);
-    overflow: none;
-
+.comment-block {
+  box-shadow: 5px 5px rgba(236, 136, 22, 0.884);
+  overflow: none;
 }
 
-.Review-button{
+.Review-button {
   background-color: rgba(236, 136, 22, 0.884);
-  margin-top:20px;
+  margin-top: 20px;
+  float: right;
+}
+hr {
+  color: rgba(247, 171, 85, 0.884);
 }
