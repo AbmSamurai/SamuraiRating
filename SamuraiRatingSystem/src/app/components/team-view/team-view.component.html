@@ -1,13 +1,13 @@
 
 <div class="container-fluid">
 
-  <div class="row justify-content-center">
-    <div class="card teamcard col-md-7 col-sm-5" >
+  <!-- <div class="row justify-content-center"> -->
+    <!-- <div class="card teamcard col-md-7 col-sm-5" > -->
      <div class="row">
         <img class="card-img-top col-md-5 col-sm-6 team-ID" src="../../../assets/img/abashwe.jpg"  alt="Card image cap"><br>
         <div class="card-block col-md-4 col-sm-5">
           <h2 class="card-title">{{this.givenTeam.Name}}</h2>
-          <h5 class="card-text">Averall points: 150 </h5>
+          <h5 class="card-text">Averall points: {{this.givenTeam.Rating}} </h5>
           <p class="card-text">Last Sprint Points: 33 </p>
           <a href="#" class="btn moreBtn btn-lg">Last  Sprint</a>
           <a (click)="dash()" class="btn moreBtn btn-lg">Other teams</a>
@@ -21,11 +21,48 @@
     <li class="list grout-item"><a class="member" href="">Member 1</a></li>
   </ul>
 </div>
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <!-- <th>Last Name</th> -->
+      <!-- <th>Username</th> -->
+    </tr>
+  </thead>
+  <tbody *ngFor="let m of this.givenTeam.members; let i = index">
+    <tr >
+      <th scope="row">{{i}}</th>
+      <td>{{m.Displayname}}</td>
+      <!-- <td>Otto</td>
+      <td>@mdo</td> -->
+    </tr>
+    <!-- <tr> -->
+      <!-- <th scope="row"></th> -->
+      <!-- <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td> -->
+    <!-- </tr> -->
+     </tbody>
+</table>
+
+
+
+
+
+
+
+
+
       </div>
 <br>
 
 
 
 
-</div>
-  </div>
+<!-- </div> -->
+
+  <!-- </div> -->
