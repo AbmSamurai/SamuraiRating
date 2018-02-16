@@ -1,6 +1,7 @@
 import { DatabaseService } from './../../../service/database.service';
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../../model/Teams';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-team-registration',
@@ -12,7 +13,11 @@ export class TeamRegistrationComponent implements OnInit {
   team:Team = new Team();
   profilePicture:ProfilePicture;
   profilePicUrl: any;
-  constructor(private dbConn: DatabaseService) { }
+  uploadPercentage: Observable<number> = this.dbConn.getUploadPercentage();
+  constructor(public dbConn: DatabaseService) { 
+  }
+
+
 
   ngOnInit() {
     
@@ -21,16 +26,10 @@ export class TeamRegistrationComponent implements OnInit {
 
   // createTeam(name: string, pictureURL: string, pin: string) {
 
-  submit(){
-    this.dbConn.createTeam(this.team);
-  }
+
 
   profileUpload(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      let file = event.target.files[0];
-      this.profilePicture = new ProfilePicture(file);
-      this.filePreview(event);
-    }
+    this.dbConn.uploadProfilePicture(event, this.team.Name);
 
   }
 
@@ -41,6 +40,16 @@ export class TeamRegistrationComponent implements OnInit {
       this.profilePicUrl = event.target.result;
     }
     reader.readAsDataURL(event.target.files[0]);
+  }
+
+    
+  submit(){
+    this.uploadFile();
+    this.dbConn.createTeam(this.team);
+  }
+
+  uploadFile(){
+    
   }
 
 }
@@ -54,5 +63,5 @@ export class ProfilePicture{
     this.file= file;
   }
 
-  
+
 }

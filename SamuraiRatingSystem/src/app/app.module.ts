@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireModule } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 import { AppComponent } from './app.component';
@@ -55,6 +56,7 @@ export const config  = {
     BrowserModule,
     AppRoutingModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
   ], 
   providers: [
     DatabaseService,
