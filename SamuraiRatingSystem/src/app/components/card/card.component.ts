@@ -24,7 +24,7 @@ constructor(
 ) {}
 
   ngOnInit() {
-    console.log(this.team, 'Here on card now');
+    // console.log(this.team, 'Here on card now');
   }
 
 
@@ -33,8 +33,8 @@ constructor(
   }
 
   Review(name: string){
-    
-  } 
+
+  }
 
 
 

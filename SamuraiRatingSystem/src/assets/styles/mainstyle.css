@@ -41,13 +41,11 @@ padding-top: 15px;
   /* border-radius: 76px; */
 }
 
-
-
 }
 /* --------------------------------------------------- */
 @media (min-width: 1200px) {
  .team-ID{
-  height: 485px;
+  height: 350px;
 }
 
 }
