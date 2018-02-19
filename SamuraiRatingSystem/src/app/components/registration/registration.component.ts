@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatabaseService } from '../../service/database.service';
 
 @Component({
   selector: 'app-registration',
@@ -9,7 +10,8 @@ export class RegistrationComponent implements OnInit {
 
   registerPart: number = 0;
 
-  constructor() { }
+  constructor(private db: DatabaseService) {
+   }
 
   ngOnInit() {
   }
@@ -17,6 +19,7 @@ export class RegistrationComponent implements OnInit {
 
   setStep(step: number){
     this.registerPart = step;
+    console.log(this.registerPart);
   }
   
 }

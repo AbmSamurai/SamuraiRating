@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 
 export class CardComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('teams') team;
+  @Input('teams') team: Team;
 
   flipped: boolean;
 constructor(
@@ -24,7 +24,8 @@ constructor(
 ) {}
 
   ngOnInit() {
-    // console.log(this.team, 'Here on card now');
+    console.log(this.team, 'Here on card now');
+    this.team.Picture
   }
 
 

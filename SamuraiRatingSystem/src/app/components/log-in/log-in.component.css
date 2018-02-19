@@ -5,3 +5,9 @@
   background-color:#fff;
 border-radius: 10px;
 }
+
+h4{
+  margin-top: 250px;
+  display: flex;
+  justify-content: center;
+}
