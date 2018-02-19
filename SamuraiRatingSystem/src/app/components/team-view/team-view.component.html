@@ -1,31 +1,54 @@
 
 <div class="container-fluid">
 
-  <div class="row justify-content-center">
-    <div class="card teamcard col-md-7 col-sm-5" >
-     <div class="row">
-        <img class="card-img-top col-md-5 col-sm-6 team-ID" src="../../../assets/img/abashwe.jpg"  alt="Card image cap"><br>
+  <!-- <div class="row justify-content-center"> -->
+    <!-- <div class="card teamcard col-md-7 col-sm-5" > -->
+     <div class="row raleway font-thin">
+        <img class="card-img-top col-md-3 col-sm-6 team-ID" src="{{this.givenTeam.Picture}}"  alt="Card image cap"><br>
         <div class="card-block col-md-4 col-sm-5">
           <h2 class="card-title">{{this.givenTeam.Name}}</h2>
-          <h5 class="card-text">Averall points: 150 </h5>
+          <h5 class="card-text">Averall points: {{this.givenTeam.Rating}} </h5>
           <p class="card-text">Last Sprint Points: 33 </p>
-          <a href="#" class="btn moreBtn btn-lg">Last  Sprint</a>
-          <a (click)="dash()" class="btn moreBtn btn-lg">Other teams</a>
+          <a href="#" class="btn moreBtn btn-lg">Last Sprint</a>
+          <a href="#" (click)="dash()" class="btn moreBtn btn-lg">Other teams</a>
         </div>
      </div>
-<!-- <hr> -->
 <br>
      <div>
-       <h2>Team members</h2>
-  <ul class="list-group members" >
-    <li class="list grout-item"><a class="member" href="">Member 1</a></li>
-  </ul>
+       <h2 class="raleway font-thin">Team members</h2>
 </div>
+
+
+
+<table class="table table-striped table-warsning col-md-5">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Full Name</th>
+     </tr>
+  </thead>
+  <tbody *ngFor="let m of this.givenTeam.Members; let i = index">
+    <tr >
+      <th scope="row">{{i + 1}}</th>
+      <td>{{m.displayName}}</td>
+         </tr>
+     </tbody>
+</table>
+
+
+
+
+
+
+
+
+
       </div>
 <br>
 
 
 
 
-</div>
-  </div>
+<!-- </div> -->
+
+  <!-- </div> -->
