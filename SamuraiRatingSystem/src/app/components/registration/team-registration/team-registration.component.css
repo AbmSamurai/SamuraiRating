@@ -62,3 +62,17 @@
     display: flex;
     margin: auto;
   }
+
+
+
+  .upload-progress{
+    width: 50px;
+    background-color: greenyellow;
+  }
+
+  .progress{
+    width: 15px;
+    height: 100%;
+    background-color: lightgray;
+   
+  }

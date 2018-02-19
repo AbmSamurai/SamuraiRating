@@ -4,9 +4,7 @@
       <div class="front">
         <div class="card-container">
           <h4 class="raleway font-thin">{{ team.Name }}</h4>
-          <div class="team-logo">
-            <img src=" {{ team.PictureUrl | safe}}">
-          </div>
+            <img class="team-logo" [src]= "team.Picture | safe">
           <h4 class="raleway font-thin">Points: {{ team.Rating }}</h4>
         </div>
 
