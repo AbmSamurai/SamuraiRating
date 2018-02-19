@@ -14,10 +14,10 @@ export class DashboardComponent implements OnInit {
   teams: Observable<Team[]>;
 
   constructor(private dbConn: DatabaseService) {
-    dbConn.getTeams();
    }
 
   ngOnInit() {
     this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
   }
+
 }

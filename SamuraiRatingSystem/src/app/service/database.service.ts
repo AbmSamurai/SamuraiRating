@@ -9,19 +9,22 @@ import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 
 import { Observable } from "rxjs/Observable";
 import { AngularFireAuth } from "angularfire2/auth";
-import * as Firebase from "firebase/app";
+import * as firebase from "firebase/app";
 import { AngularFirestore } from "angularfire2/firestore";
 import { User } from "@firebase/auth-types";
 import { AngularFireStorage } from "angularfire2/storage";
+import { Subscription } from "rxjs/Subscription";
 // import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
 
 @Injectable()
 export class DatabaseService {
-  public user$: Observable<Firebase.User>;
+  public user$: Observable<firebase.User>;
 
+  displayPercentage: number;
   allTeams;
   public SneakedTeam;
+  disableNav: boolean = false;
 
   userList;
   teamList;
@@ -36,6 +39,7 @@ export class DatabaseService {
   uploadPercent: Observable<number>;
   downloadURL: Observable<string>;
   filePath: string;
+  member: Member = new Member();
 
   teams_collectionRef = this.afs.collection<Team>("Teams");
   criteria_collectionRef = this.afs.collection<Criteria>("criteria");
@@ -53,8 +57,16 @@ export class DatabaseService {
     return this.teams_collectionRef.valueChanges();
   }
 
+  getTeam(teamName: string) {
+    return this.teams_collectionRef.doc("" + teamName);
+  }
+
   getUsers() {
     return this.user_collectionRef.valueChanges();
+  }
+
+  getUser(uid: string) {
+    return this.user_collectionRef.doc(uid);
   }
 
   getCriteria() {
@@ -65,7 +77,6 @@ export class DatabaseService {
     const file = event.target.files[0];
     this.filePath = "" + name + "-logo";
     const task = this.storage.upload(this.filePath, file);
-
     this.uploadPercent = task.percentageChanges();
     this.downloadURL = task.downloadURL();
   }
@@ -75,7 +86,15 @@ export class DatabaseService {
   }
 
   getUploadPercentage() {
-    return this.uploadPercent;
+    this.setUploadPercentage();
+    return this.displayPercentage;
+  }
+
+  setUploadPercentage() {
+    this.uploadPercent.subscribe(response => {
+      this.displayPercentage = response as number;
+      console.log((this.displayPercentage = response as number));
+    });
   }
 
   getDownloadUrl() {
@@ -93,43 +112,39 @@ export class DatabaseService {
   }
 
   googlePopup() {
-    const prov = new Firebase.auth.GoogleAuthProvider();
     this.afAuth.auth
-      .signInWithPopup(prov)
-      .then(success => {
-        // alert('User added');
-        let flag: Boolean;
-        // tslint:disable-next-line:no-shadowed-variable
-        this.userList.forEach(element => {
-          for (let i = 0; i < element.length; i++) {
-            console.log(element[i].User + "here");
-            if (element[i].User === this.getCurrentUsersID()) {
-              flag = false;
-              break;
-            }
-          }
-
-          if (flag === undefined) {
-            alert("User added");
-            this.createUser(this.getCurrentUsersID());
-          } else {
-            alert("Welcome Back Bro");
-            this.router.navigate(["/dashboard"]);
-          }
-        });
-      })
-      .catch(err => {
-        console.log(err.message);
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(response => {
+        this.disableNav = false;
+        if (response.additionalUserInfo.isNewUser) {
+          this.createUser();
+          this.router.navigate(["/registration"]);
+        } else {
+          this.router.navigate(["/dashboard"]);
+        }
       });
   }
 
-  // Must add the name and pictureURL
-  createUser(id) {}
+  logout() {
+    this.afAuth.auth.signOut();
+    this.router.navigate(["/login"]);
+  }
 
-  createTeam(team: Team) {
-    this.teams_collectionRef
-      .doc("" + team.Name)
-      .set(Object.assign({}, team))
+  // Must add the name and pictureURL
+  createUser() {
+    this.user_collectionRef
+      .doc(this.afAuth.auth.currentUser.uid)
+      .set(
+        Object.assign(
+          {},
+          {
+            team: "",
+            displayName: this.afAuth.auth.currentUser.displayName,
+            photoURL: this.afAuth.auth.currentUser.photoURL,
+            UID: this.afAuth.auth.currentUser.uid
+          }
+        )
+      )
       .then(success => {
         console.log("success!");
       })
@@ -138,32 +153,98 @@ export class DatabaseService {
       });
   }
 
-  // Focus on this
+  setTeam(member: Member, selectedTeam: string) {
+    var subscription: Subscription = new Subscription();
+    var team: Team = new Team();
+    team.Members.push(member);
 
-  getTeamMembers(key) {
-    for (let i = 0; i < this.teams.length; i++) {
-      console.log(this.teams[i].Members[i].UserID);
+    member.team = selectedTeam;
+    console.log("update member", member);
+    //updates member
+    this.user_collectionRef.doc(member.UID).update(Object.assign({}, member));
+
+    console.log("move member");
+
+    //Moves member to new team
+    this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
+
+    console.log("remove member");
+    if (member.team.length > 0) {
+      subscription = this.getTeam(member.team)
+        .valueChanges()
+        .subscribe(response => {
+          team = response as Team;
+          team.Members.forEach(element => {
+            console.log(element.UID === member.UID);
+            if (element.UID === member.UID) {
+              element.UID = "";
+              console.log('WHY')
+            }
+          });
+          console.log('ENDING SUBSCRIPTION')
+          subscription.unsubscribe();
+        });
     }
 
-    // tslint:disable-next-line:no-shadowed-variable
-    this.teamList.forEach(element => {
-      for (let i = 0; i < element.length; i++) {
-        if (element[i].key === key) {
-          for (const z = 0; i < element[i].Members.length; i++) {
-            this.members.push(new Member(element[i].Members[z].UserID));
-          }
-        }
-      }
-    });
+    this.router.navigate(["/dashboard"]);
   }
-  // }
 
-  // Don't run this again
-  createCriteria(question) {}
+  switchTeam(teamName: string, member: Member) {
+    this.getTeam(member.team)
+      .valueChanges()
+      .map(response => {
+        response as Team;
+        console.log(response);
+      });
+  }
 
-  deleteCriteria(key) {}
+  createTeam(team: Team) {
+    return this.teams_collectionRef
+      .doc(team.Name)
+      .set(
+        Object.assign(
+          {},
+          {
+            Members: new Array<Member>(),
+            Name: team.Name,
+            Picture: team.Picture,
+            Pin: team.Pin,
+            Rating: 0
+          }
+        )
+      )
+      .then(success => {
+        console.log("success!");
+        this.router.navigate(["/dashboard"]);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }
 
-  getCurrentUsersID() {
+  deleteTeam(teamName: string) {
+    this.teams_collectionRef.doc(teamName).delete();
+  }
+
+  createQuestion(question: String) {
+    this.criteria_collectionRef
+      .doc(question.slice(0, 5))
+      .set(Object.assign({}, question))
+      .then(success => {
+        console.log("successfully created crieria!");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }
+
+  deleteCriteria(question: String) {
+    this.criteria_collectionRef.doc(question.slice(0, 5)).delete();
+  }
+
+  getTeamMembers(key) {}
+
+  getCurrentUserID() {
     return this.afAuth.auth.currentUser.uid;
   }
 
@@ -184,16 +265,7 @@ export class DatabaseService {
     return this.teamKey;
   }
 
-  updateRating(val :number, TeamName :string){
-
-    const ref = this.afs.doc(`Teams/${TeamName}`);
-    console.log(ref.valueChanges);
-    ref.update({"Rating": val})
-  }
-
-  logout() {
-    this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(["/login"]);
-    });
+  getDisableNav() {
+    return this.disableNav;
   }
 }

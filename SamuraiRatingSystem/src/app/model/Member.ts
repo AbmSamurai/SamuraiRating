@@ -1,7 +1,6 @@
 export class Member{
-    UserID: string;
-
-    constructor(userID){
-        this.UserID = userID;
-    }
+    team: string;
+    displayName: string;
+    photoURL: string;
+    UID:string;
 }

@@ -1,15 +1,7 @@
 export class Criteria{
-    Questions: Question[];
-
-    constructor(ques){
-        this.Questions = ques;
-    }
+    Questions: Array<Question> = new Array<Question>();
 }
 
 export class Question{
     Question: string;
-
-    constructor(ques){
-        this.Question = ques;
-    }
 }
