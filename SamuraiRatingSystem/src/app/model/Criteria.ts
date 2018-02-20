@@ -1,15 +1,15 @@
 export class Criteria{
-    Questions: Question[];
+    Question: Array<any[]>;
 
     constructor(ques){
-        this.Questions = ques;
+        this.Question = ques.question;
     }
 }
 
 export class Question{
     Question: string;
 
-    constructor(ques){
-        this.Question = ques;
-    }
+    // constructor(ques){
+    //     this.Question = ques;
+    // }
 }

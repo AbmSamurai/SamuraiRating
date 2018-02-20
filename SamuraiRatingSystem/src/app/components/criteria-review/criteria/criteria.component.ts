@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { DatabaseService } from './../../../service/database.service';
 import { Question, Criteria } from './../../../model/Criteria';
 import { Component, OnInit } from '@angular/core';
@@ -12,30 +13,38 @@ questions: Question[] = [];
 quest: Question[];
 add: Boolean = false;
 addNew: string = '';
-
+Criteria: Array<{question: string}> =[] ;
   constructor(private dbConn: DatabaseService) { 
-    // this.questions.push(
-    //   { Question: 'How was the presentation? *' },
-    //   { Question: 'Estimation Accuracy *' },
-    //   { Question: 'Bug free *' },
-    //   { Question: 'Efficiency *' },
-    //   { Question: 'Overall impressions *' },)
+// this.Criteria = this.dbConn.getCriteria();
+// console.log(this.Criteria);
+
+
+// this.questions.push(
+  //   { Question: 'How was the presentation? *' },
+  //   { Question: 'Estimation Accuracy *' },
+  //   { Question: 'Bug free *' },
+  //   { Question: 'Efficiency *' },
+  //   { Question: 'Overall impressions *' },)
+            
+  
+  this.dbConn.getCriteria().subscribe(criteria => {        
+            this.Criteria = criteria;
+            });
   }
 
   ngOnInit() {
-    this.dbConn.getCriteria().subscribe(element => {
-        
-      element.map(res => {
-        this.questions.push(
-          new Question(res)
-        );
+    
+
+      // element.map(res => {
+      //   this.questions.push(
+      //     new Question(res)
+      //   );
 
         // console.log(res. + "here")
-      })
+      // })
 
-      console.log(this.questions + "here")
+      // console.log(this.questions + "here")
       
-    })
 
     // this.quest = this.questions.Questions;
     
@@ -49,10 +58,9 @@ addNew: string = '';
     if(this.addNew == ''){
       alert('Really?!');
     }else {
-      // this.questions.push(
-      //   { Question: addNew });
       
-      // this.addNew = ''
+      this.dbConn.createCriteria(addNew);
+
     }
     
   }

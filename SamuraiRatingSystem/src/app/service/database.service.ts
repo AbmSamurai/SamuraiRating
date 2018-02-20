@@ -40,7 +40,7 @@ export class DatabaseService {
     filePath: string;
 
     teams_collectionRef = this.afs.collection<Team>('Teams');
-    criteria_collectionRef = this.afs.collection<Criteria>('criteria');
+    criteria_collectionRef = this.afs.collection<any>('criteria');
     user_collectionRef = this.afs.collection<User>('users');
     constructor(
         private afs: AngularFirestore,
@@ -265,9 +265,11 @@ export class DatabaseService {
 
     // Don't run this again
     createCriteria(question) {
-        // this.afs.collection("/Criteria/Questions").push({
-        //     Question: 'What do you feed dogs'
-        // });
+        let mans =this.criteria_collectionRef.add (Object.assign({question: question})).then(success => {
+            console.log('success!');
+        }).catch(err => {
+            console.log(err.message);
+        });
     }
 
         deleteCriteria(key) {
