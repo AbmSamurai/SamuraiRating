@@ -178,10 +178,10 @@ export class DatabaseService {
             console.log(element.UID === member.UID);
             if (element.UID === member.UID) {
               element.UID = "";
-              console.log('WHY')
+              console.log("WHY");
             }
           });
-          console.log('ENDING SUBSCRIPTION')
+          console.log("ENDING SUBSCRIPTION");
           subscription.unsubscribe();
         });
     }
@@ -267,5 +267,10 @@ export class DatabaseService {
 
   getDisableNav() {
     return this.disableNav;
+  }
+  updateRating(val: number, TeamName: string) {
+    const ref = this.afs.doc(`Teams/${TeamName}`);
+    console.log(ref.valueChanges);
+    ref.update({ Rating: val });
   }
 }

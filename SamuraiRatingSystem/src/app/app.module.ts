@@ -57,7 +57,7 @@ export const config  = {
     FormsModule,ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,
   ], 
   providers: [
