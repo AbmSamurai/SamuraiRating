@@ -1,3 +1,6 @@
+import { CriteriaComponent } from './components/criteria-review/criteria/criteria.component';
+import { ReviewComponent } from './components/criteria-review/review/review.component';
+import { CriteriaReviewComponent } from './components/criteria-review/criteria-review.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -22,7 +25,6 @@ import { AuthGuard } from './service/auth-guard.service';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { SafePipe } from './pipe/safe.pipe';
 
-
 export const config  = {
   apiKey: 'AIzaSyADdYbrD14h7lBjRckwdUh5PoTwflXeVWk',
   authDomain: 'team-samurai.firebaseapp.com',
@@ -46,6 +48,9 @@ export const config  = {
     AdminRegistrationComponent,
     TeamViewComponent,
     SafePipe,
+    CriteriaComponent,
+    ReviewComponent,
+    CriteriaReviewComponent
   ],
   imports: [
     BrowserModule,

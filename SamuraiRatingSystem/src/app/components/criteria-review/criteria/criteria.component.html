@@ -1,0 +1,18 @@
+<div style = "text-align: center;">
+  <label class = "reviewLabel">Criteria</label><br>
+  
+  <div *ngFor = "let q of questions">
+    <label class="criteriaLabel">{{ q.Question }}</label> 
+    <i class="fas fa-minus 3x" style="color: red"></i>
+  </div>
+  
+  <br>
+
+  <div style = "text-align: center;" *ngIf = "add == true">
+    <input [(ngModel)] = "addNew" class="addInput btn" type="text">
+    <i (click) = "addCriteria(addNew)" class="fas fa-paper-plane 3x" style="color: #30F282"></i>
+    <i (click) = "showAdd(false)" class="fas fa-times 3x"  style="color: red; margin-left: 1%"></i>
+  </div>
+
+  <i (click) = "showAdd(true)" class="fas fa-plus 3x" style="color: #30F282"></i>
+</div>

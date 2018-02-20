@@ -1,3 +1,4 @@
+import { CriteriaReviewComponent } from './components/criteria-review/criteria-review.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
@@ -24,11 +25,13 @@ const routes: Routes = [
     path: "registration",
     component: RegistrationComponent
   },{
-
     path: 'teamView',
     component: TeamViewComponent,
         // canActivate: [AuthGuard]
-
+  },
+  {
+    path: "admin",
+    component: CriteriaReviewComponent
   }
 ];
 
