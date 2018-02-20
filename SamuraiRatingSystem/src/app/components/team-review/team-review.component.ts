@@ -1,9 +1,15 @@
 import { AngularFirestore } from "angularfire2/firestore";
-import { Criteria } from "./../../model/Criteria";
+import { Criteria, Question } from "./../../model/Criteria";
 import { Observable } from "rxjs/Rx";
 import { DatabaseService } from "./../../service/database.service";
 import { Component, OnInit } from "@angular/core";
-import { Validators, FormBuilder, FormGroup, FormControl, FormArray} from "@angular/forms";
+import {
+  Validators,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  FormArray
+} from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
@@ -14,12 +20,12 @@ import { Router, ActivatedRoute } from "@angular/router";
 export class TeamReviewComponent implements OnInit {
   ratingForm: FormGroup;
   rating = 0;
-  criteria: Observable<Criteria[]>;
-  
+  criteria: Criteria[];
+
   Team: string;
   Stars: FormArray = new FormArray([]);
-  starIds: number[][]=[];
-  
+  starIds: number[][] = [];
+  visible:boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +46,11 @@ export class TeamReviewComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    setTimeout(() => {
+      this.visible = true;
+    }, 2500);
+  }
   //
   submitRating(review) {
     console.log(review);
@@ -49,24 +59,42 @@ export class TeamReviewComponent implements OnInit {
     this.ratingForm.reset();
   }
 
-  populateStars() {
-    this.criteria = this.dbserv.getCriteria().map(res => res as Criteria[]);
-    console.log(this.criteria);
+  populateStars(): void {
+   // this.criteria = this.dbserv.getCriteria().map(res => res as Criteria[]);
+   // console.log(this.criteria);
     let index = 0;
 
-    this.criteria.subscribe(res => {
-      for (var Question in res) {
-        let temp:number[]=[]
-        console.log(index);
-        this.Stars.push(new FormControl(null, [Validators.required]));
-        for (var i = 0; i < 5; i++) {
-          console.log(i);
-          temp.push(Math.round(Math.random() * (500 - 1) + 1));
+    // this.criteria.subscribe(res => {
+     
+    //   for (var Question in res) {
+    //     let temp: number[] = [];
+    //     console.log(index);
+    //     this.Stars.push(new FormControl(null, [Validators.required]));
+    //     for (var i = 0; i < 5; i++) {
+    //       console.log(i);
+    //       temp.push(Math.round(Math.random() * (500 - 1) + 1));
+    //     }
+    //     this.starIds[index] = temp;
+    //     console.log(this.starIds);
+    //     index++;
+    //   }
+    // });
+
+    this.dbserv.getCriteria().subscribe(res => {
+      this.criteria = res;
+      console.log(this.criteria)
+        for (var Question in res) {
+          let temp: number[] = [];
+          console.log(index);
+          this.Stars.push(new FormControl(null, [Validators.required]));
+          for (var i = 0; i < 5; i++) {
+            console.log(i);
+            temp.push(Math.round(Math.random() * (500 - 1) + 1));
+          }
+          this.starIds[index] = temp;
+          console.log(this.starIds);
+          index++;
         }
-        this.starIds[index] = temp;
-        console.log(this.starIds)
-        index++;
-      }
     });
   }
 }

@@ -57,10 +57,47 @@ selection .rating > input:checked ~ label:hover ~ label {
   margin:20px;
 }
 
-padding-top-20{
-  padding-top: 20px;
+margin-top-20{
+ margin-top: 20px;
 }
 
-hr {
-  color: rgba(247, 171, 85, 0.884);
+
+
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid rgba(247, 171, 85, 0.884);
+  border-bottom: 16px solid rgba(247, 171, 85, 0.884);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+   animation: spin 1s linear infinite; 
+  position: absolute;
+  left: 45%;
+  top:50%;
+}
+
+.content{
+  animation: slideup 2s 
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideup {
+
+  from {
+    bottom: -100px;
+    opacity: 0
+  }
+  to {
+    bottom: 0;
+    opacity: 1
+  }
 }

@@ -53,8 +53,10 @@ export class DatabaseService {
     this.user$ = afAuth.authState;
   }
 
-  getTeams(): Observable<Team[]> {
-    return this.teams_collectionRef.valueChanges();
+  getTeams(): Observable<any> {
+    return this.afs
+      .collection<Team>("Teams", ref => ref.orderBy("Rating", "desc"))
+      .valueChanges();
   }
 
   getTeam(teamName: string) {

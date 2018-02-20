@@ -1,30 +1,28 @@
+<div class="container margin-top-20 content" *ngIf="visible && !criteria?.isEmpty">
 
-
-<div class="container" *ngIf="!criteria?.isEmpty">
 
   <form [formGroup]="ratingForm" (ngSubmit)="submitRating(ratingForm.value)">
-    <div class="rating col-md-12 col-xl-12 col-lg-12" *ngFor="let x of criteria | async  ;index as l">
-    <div class="question">{{l+1}}.{{x.question}}</div>
-          
-          <fieldset formArrayName="stars" class="rating ">
+    <div class="rating col-md-12 col-xl-12 col-lg-12" *ngFor="let x of criteria;index as l">
 
-            <ng-container *ngFor="let num of [4,3,2,1,0]">
+      <div class="question">{{x.question}}</div>
 
-              <input [name]="l" [formControlName]="l" [id]="'star'+(starIds[l][num])" [value]="num+1" type="radio" />
+      <fieldset formArrayName="stars" class="rating ">
 
-              <label class="full" [for]="'star'+(starIds[l][num])"></label>
+        <ng-container *ngFor="let num of [4,3,2,1,0]">
 
-            </ng-container>
+          <input [name]="l" [formControlName]="l" [id]="'star'+(starIds[l][num])" [value]="num+1" type="radio" />
 
-          </fieldset>
+          <label class="full" [for]="'star'+(starIds[l][num])"></label>
 
-          <hr/>
+        </ng-container>
+
+      </fieldset>
 
     </div>
 
     <textarea name="" formControlName="comment" class="form-control comment-block" id="" cols="30" rows="10"></textarea>
 
-<button class="btn submit-button padding-top-20 submit-text" [disabled]='!ratingForm.valid' type="submit">Submit</button>
+    <button class="btn submit-button padding-top-20 submit-text" [disabled]='!ratingForm.valid' type="submit">Submit</button>
 
 
 
@@ -32,11 +30,8 @@
 
 
 </div>
-{{ratingForm.value | json}}
 
-<ng-container #>
-
-</ng-container>
+ <div class="loader" *ngIf="!visible"></div> 
 
 <!-- <input [name]="l" [formControlName]="l" [id]="'star'+(starIds[num]*(l+2))" [value]="num+0.5" type="radio" />
   
