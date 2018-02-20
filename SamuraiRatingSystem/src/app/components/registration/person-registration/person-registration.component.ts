@@ -10,7 +10,7 @@ import { Member } from '../../../model/Member';
   templateUrl: './person-registration.component.html',
   styleUrls: ['./person-registration.component.css','../registration.component.css']
 })
-export class PersonRegistrationComponent implements OnInit {
+export class PersonRegistrationComponent  {
   
   teams: Observable<Team[]>;
   teamName:string;
@@ -20,15 +20,8 @@ export class PersonRegistrationComponent implements OnInit {
     this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
    }
 
-  ngOnInit() {
-   
-  }
 
   submit(){
-
-
-  console.log('WTF - 2', this.teamName)
-
    var subscription = this.dbConn.getUser(this.dbConn.getCurrentUserID()).valueChanges().subscribe(response =>{
      this.member = response as Member;
      console.log(response);  
@@ -39,7 +32,6 @@ export class PersonRegistrationComponent implements OnInit {
   }
 
   setSelection(teamName:string){
-    console.log('SETTING TEAM TO: ', this.teamName)
     this.teamName = teamName;
   }
 }

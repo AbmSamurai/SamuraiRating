@@ -156,47 +156,33 @@ export class DatabaseService {
   }
 
   setTeam(member: Member, selectedTeam: string) {
-    var subscription: Subscription = new Subscription();
     var team: Team = new Team();
+    var prevTeam = member.team;
     team.Members.push(member);
-
     member.team = selectedTeam;
-    console.log("update member", member);
     //updates member
     this.user_collectionRef.doc(member.UID).update(Object.assign({}, member));
 
-    console.log("move member");
+    //switch members
+    this.switchTeam(prevTeam, member.UID);
 
-    //Moves member to new team
+    //update team 
     this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
-
-    console.log("remove member");
-    if (member.team.length > 0) {
-      subscription = this.getTeam(member.team)
-        .valueChanges()
-        .subscribe(response => {
-          team = response as Team;
-          team.Members.forEach(element => {
-            console.log(element.UID === member.UID);
-            if (element.UID === member.UID) {
-              element.UID = "";
-              console.log("WHY");
-            }
-          });
-          console.log("ENDING SUBSCRIPTION");
-          subscription.unsubscribe();
-        });
-    }
-
-    this.router.navigate(["/dashboard"]);
   }
 
-  switchTeam(teamName: string, member: Member) {
-    this.getTeam(member.team)
+  switchTeam(prevTeam: string, UID: string) {
+    var team;
+    this.teams_collectionRef
+      .doc(prevTeam)
       .valueChanges()
-      .map(response => {
-        response as Team;
-        console.log(response);
+      .subscribe(response => {
+        team = response as Team;
+        for (var i = 0; i < team.Members.length; i++) {
+          if (UID === team.Members[i].UID) {
+            team.Members.splice(i, 1);
+          }
+        }
+        this.teams_collectionRef.doc(prevTeam).update(Object.assign({}, team));
       });
   }
 
