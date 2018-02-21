@@ -265,20 +265,41 @@ export class DatabaseService {
 
     // Don't run this again
     createCriteria(question) {
-        let mans =this.criteria_collectionRef.add (Object.assign({question: question})).then(success => {
+        let mans = this.criteria_collectionRef.add(Object.assign({ question: question })).then(success => {
             console.log('success!');
         }).catch(err => {
             console.log(err.message);
         });
     }
 
-        deleteCriteria(key) {
+    deleteCriteria(question) {
+        console.log("Haybo");
 
-        }
+        let citiesRef = this.criteria_collectionRef.ref.where("question", "==", question)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+            
+            this.delete(doc.id);
+        });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
 
-        getCurrentUsersID() {
+    }
+
+    delete(key){
+        this.afs.collection("criteria").doc(key).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+    }
+
+    getCurrentUsersID() {
         return this.afAuth.auth.currentUser.uid;
-      }
+    }
 
     getUserName() {
       return this.afAuth.auth.currentUser.displayName;

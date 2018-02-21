@@ -29,6 +29,8 @@ Criteria: Array<{question: string}> =[] ;
   
   this.dbConn.getCriteria().subscribe(criteria => {        
             this.Criteria = criteria;
+
+            console.log(criteria)
             });
   }
 
@@ -50,6 +52,10 @@ Criteria: Array<{question: string}> =[] ;
     
   }
 
+  delete(que){
+    this.dbConn.deleteCriteria(que);
+  }
+
   showAdd(state){
     this.add = state;
   }
@@ -59,6 +65,7 @@ Criteria: Array<{question: string}> =[] ;
       alert('Really?!');
     }else {
       
+      this.addNew = '';
       this.dbConn.createCriteria(addNew);
 
     }

@@ -3,7 +3,7 @@
   
   <div *ngFor = "let q of Criteria">
     <label class="criteriaLabel">{{ q.question }}</label> 
-    <i class="fas fa-minus 3x" style="color: red"></i>
+    <i (click) = "delete(q.question)" class="fas fa-minus 3x" style="color: red"></i>
   </div>
   
   <br>
