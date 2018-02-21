@@ -1,48 +1,42 @@
-import { Input } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
-import { print } from 'util';
-import { DatabaseService } from '../../service/database.service';
-import { Team } from '../../model/Teams';
-import { Observable } from '@firebase/util/dist/esm/src/subscribe';
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { print } from "util";
+import { DatabaseService } from "../../service/database.service";
+import { Team } from "../../model/Teams";
+import { Observable } from "@firebase/util/dist/esm/src/subscribe";
+
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  selector: "app-card",
+  templateUrl: "./card.component.html",
+  styleUrls: ["./card.component.css"]
 })
-
-
 export class CardComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('teams') team: Team;
+  @Input("teams") team: Team;
 
   flipped: boolean;
-constructor(
-  private dbs: DatabaseService,
-  private router: Router,
-  // private route: Routes,
-) {}
+  constructor(
+    private dbs: DatabaseService,
+    private router: Router // private route: Routes,
+  ) {}
 
   ngOnInit() {
-    console.log(this.team, 'Here on card now');
-    this.team.Picture
+    console.log(this.team, "Here on card now");
+    this.team.Picture;
   }
-
 
   flip() {
     this.flipped = !this.flipped;
   }
 
-  Review(name: string){
-
+  StartReview(selectedTeam: string) {
+    console.log(selectedTeam, "is raedy for review");
+    this.router.navigate(["review/", selectedTeam]);
   }
-
-
-
-sendTeam(specifiedTeam) {
-  console.log('clicked on this team:', specifiedTeam.Name);
-  this.dbs.SneakedTeam = specifiedTeam;
-  this.router.navigate(['teamView']);
+  sendTeam(specifiedTeam) {
+    console.log("clicked on this team:", specifiedTeam.Name);
+    this.dbs.SneakedTeam = specifiedTeam;
+    this.router.navigate(["teamView"]);
   }
-
 }
