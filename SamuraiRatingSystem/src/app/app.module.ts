@@ -45,7 +45,8 @@ export const config  = {
     RegistrationComponent,
     TeamRegistrationComponent,
     PersonRegistrationComponent,
-    AdminRegistrationComponent,TeamReviewComponent,
+    AdminRegistrationComponent,
+    TeamReviewComponent,
     TeamViewComponent,
     SafePipe
   ],
@@ -54,12 +55,13 @@ export const config  = {
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    FormsModule,ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,
-  ], 
+  ],
   providers: [
     DatabaseService,
     AuthGuard
