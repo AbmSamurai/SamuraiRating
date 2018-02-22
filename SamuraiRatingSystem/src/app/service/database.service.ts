@@ -26,7 +26,7 @@ export class DatabaseService {
   public SneakedTeam;
   
   disableNav: boolean = false;
-
+  hasBeenRemoved: boolean = false;
   userList;
   teamList;
   criteriaList;
@@ -172,19 +172,24 @@ export class DatabaseService {
   }
 
   switchTeam(prevTeam: string, UID: string) {
-    let team;
-    this.teams_collectionRef
+    var team;
+    var subscription = this.teams_collectionRef
       .doc(prevTeam)
       .valueChanges()
       .subscribe(response => {
         team = response as Team;
-        for (let i = 0; i < team.Members.length; i++) {
-          if (UID === team.Members[i].UID) {
+        for (var i = 0; i < team.Members.length; i++) { 
+          if (UID === team.Members[i].UID && !this.hasBeenRemoved) {
             team.Members.splice(i, 1);
+           this.hasBeenRemoved = true;
           }
         }
         this.teams_collectionRef.doc(prevTeam).update(Object.assign({}, team));
+
+
       });
+
+      
   }
 
   createTeam(team: Team) {
