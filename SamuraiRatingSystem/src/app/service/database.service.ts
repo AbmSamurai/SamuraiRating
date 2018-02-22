@@ -1,281 +1,247 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { Criteria, Question } from './../model/Criteria';
-import { Team } from './../model/Teams';
-import { Member } from './../model/Member';
-import { element } from 'protractor';
-import { Injectable } from '@angular/core';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { Router, ActivatedRoute } from "@angular/router";
+import { Criteria, Question } from "./../model/Criteria";
+import { Team } from "./../model/Teams";
+import { Member } from "./../model/Member";
+import { element } from "protractor";
+import { Injectable } from "@angular/core";
+import { AngularWaitBarrier } from "blocking-proxy/built/lib/angular_wait_barrier";
+import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 
-import { Observable } from 'rxjs/Observable';
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as Firebase from 'firebase/app';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { User } from '@firebase/auth-types';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { Observable } from "rxjs/Observable";
+import { AngularFireAuth } from "angularfire2/auth";
+import * as firebase from "firebase/app";
+import { AngularFirestore } from "angularfire2/firestore";
+import { User } from "@firebase/auth-types";
+import { AngularFireStorage } from "angularfire2/storage";
+import { Subscription } from "rxjs/Subscription";
 // import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
 
 @Injectable()
 export class DatabaseService {
-  public user$: Observable<Firebase.User>;
+  public user$: Observable<firebase.User>;
 
+  displayPercentage: number;
   allTeams;
- public SneakedTeam;
+  public SneakedTeam;
+  disableNav: boolean = false;
 
+  userList;
+  teamList;
+  criteriaList;
+  criteria: Criteria[] = [];
+  haveAccount: Boolean;
+  teamKey;
+  teams: Team[] = [];
+  members: Member[] = [];
+  displayName: string;
+  photoURL: string;
+  uploadPercent: Observable<number>;
+  downloadURL: Observable<string>;
+  filePath: string;
+  member: Member = new Member();
 
-
-    userList;
-    teamList;
-    criteriaList;
-    criteria: Criteria[] = [];
-    haveAccount: Boolean;
-    teamKey;
-    teams: Team[] = [];
-    members: Member[] = [];
-    displayName: string;
-    photoURL: string;
-    uploadPercent: Observable<number>;
-    downloadURL: Observable<string>;
-    filePath: string;
-
-    teams_collectionRef = this.afs.collection<Team>('Teams');
-    criteria_collectionRef = this.afs.collection<any>('criteria');
-    user_collectionRef = this.afs.collection<User>('users');
-    constructor(
-        private afs: AngularFirestore,
-        private afAuth: AngularFireAuth,
-        private router: Router,
-        private storage: AngularFireStorage,
-        ) {
+  teams_collectionRef = this.afs.collection<Team>("Teams");
+  criteria_collectionRef = this.afs.collection<any>("criteria");
+  user_collectionRef = this.afs.collection<User>("users");
+  constructor(
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private storage: AngularFireStorage
+  ) {
     this.user$ = afAuth.authState;
+  }
 
-    // // Lists all the users in the DB
-    // this.userList = this.afs.collection('Users').snapshotChanges().map(changes => {
-    //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    // });
+  getTeams(): Observable<any> {
+    return this.afs
+      .collection<Team>("Teams", ref => ref.orderBy("Rating", "desc"))
+      .valueChanges();
+  }
 
-    // // Lists all the teams in the DB
-    // this.teamList = this.afs.collection('Teams').snapshotChanges().map(changes => {
-    //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    // });
+  getTeam(teamName: string) {
+    return this.teams_collectionRef.doc("" + teamName);
+  }
 
-    // this.criteriaList = this.afs.collection("Criteria/Questions").snapshotChanges().map(changes => {
-    //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    // });
-    }
+  getUsers() {
+    return this.user_collectionRef.valueChanges();
+  }
 
-    getTeams(): Observable<Team[]> {
-       return this.teams_collectionRef.valueChanges();
-    }
+  getUser(uid: string) {
+    return this.user_collectionRef.doc(uid);
+  }
 
-    getUsers() {
-        return this.user_collectionRef.valueChanges();
-    }
+  getCriteria() {
+    return this.criteria_collectionRef.valueChanges();
+  }
 
-    getCriteria() {
-        return this.criteria_collectionRef.valueChanges();
-    }
+  uploadProfilePicture(event, name) {
+    const file = event.target.files[0];
+    this.filePath = "" + name + "-logo";
+    const task = this.storage.upload(this.filePath, file);
+    this.uploadPercent = task.percentageChanges();
+    this.downloadURL = task.downloadURL();
+  }
 
+  getFilePath() {
+    return this.filePath;
+  }
 
+  getUploadPercentage() {
+    this.setUploadPercentage();
+    return this.displayPercentage;
+  }
 
+  setUploadPercentage() {
+    this.uploadPercent.subscribe(response => {
+      this.displayPercentage = response as number;
+      console.log((this.displayPercentage = response as number));
+    });
+  }
 
-  
-    uploadProfilePicture(event, name){
-        const file = event.target.files[0];
-        this.filePath = ''+ name + '-logo';
-        const task = this.storage.upload(this.filePath, file);
+  getDownloadUrl() {
+    return this.downloadURL;
+  }
 
-        this.uploadPercent = task.percentageChanges();
-        this.downloadURL = task.downloadURL();
-    }
+  getData(collection: string, variable: string, operator: any, value: any) {
+    return this.afs
+      .collection(collection, ref => ref.where(variable, operator, value))
+      .valueChanges()
+      .map(response => {
+        // console.log(response);
+        return response;
+      });
+  }
 
-    getFilePath(){
-        return this.filePath;
-    }
+  googlePopup() {
+    this.afAuth.auth
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(response => {
+        this.disableNav = false;
+        if (response.additionalUserInfo.isNewUser) {
+          this.createUser();
+          this.router.navigate(["/registration"]);
+        } else {
+          this.router.navigate(["/dashboard"]);
+        }
+      });
+  }
 
-    getUploadPercentage(){
-        return this.uploadPercent;
-    }
+  logout() {
+    this.afAuth.auth.signOut();
+    this.router.navigate(["/login"]);
+  }
 
+  // Must add the name and pictureURL
+  createUser() {
+    this.user_collectionRef
+      .doc(this.afAuth.auth.currentUser.uid)
+      .set(
+        Object.assign(
+          {},
+          {
+            team: "",
+            displayName: this.afAuth.auth.currentUser.displayName,
+            photoURL: this.afAuth.auth.currentUser.photoURL,
+            UID: this.afAuth.auth.currentUser.uid
+          }
+        )
+      )
+      .then(success => {
+        console.log("success!");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }
 
-    getDownloadUrl(){
-        return this.downloadURL;
-    }
+  setTeam(member: Member, selectedTeam: string) {
+    var team: Team = new Team();
+    var prevTeam = member.team;
+    team.Members.push(member);
+    member.team = selectedTeam;
+    //updates member
+    this.user_collectionRef.doc(member.UID).update(Object.assign({}, member));
 
+    //switch members
+    this.switchTeam(prevTeam, member.UID);
 
-    getData(collection: string,  variable:string, operator: any, value: any){
-        return  this.afs.collection(collection, ref => ref.where(variable, operator, value))
-        .valueChanges().map(response => {
-          // console.log(response);
-          return response;
-        });
-    }
+    //update team 
+    this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
+  }
 
+  switchTeam(prevTeam: string, UID: string) {
+    var team;
+    this.teams_collectionRef
+      .doc(prevTeam)
+      .valueChanges()
+      .subscribe(response => {
+        team = response as Team;
+        for (var i = 0; i < team.Members.length; i++) {
+          if (UID === team.Members[i].UID) {
+            team.Members.splice(i, 1);
+          }
+        }
+        this.teams_collectionRef.doc(prevTeam).update(Object.assign({}, team));
+      });
+  }
 
-    googlePopup() {
-        const prov = new Firebase.auth.GoogleAuthProvider();
-        this.afAuth.auth.signInWithPopup(prov).then(
-            (success) => {
-                // alert('User added');
-                let flag: Boolean;
-                // tslint:disable-next-line:no-shadowed-variable
-                this.userList.forEach(element => {
-                    for (let i = 0; i < element.length; i++) {
-                        console.log(element[i].User + 'here');
-                        if (element[i].User === this.getCurrentUsersID()) {
-                            flag = false;
-                            break;
-                        }
-                    }
+  createTeam(team: Team) {
+    return this.teams_collectionRef
+      .doc(team.Name)
+      .set(
+        Object.assign(
+          {},
+          {
+            Members: new Array<Member>(),
+            Name: team.Name,
+            Picture: team.Picture,
+            Pin: team.Pin,
+            Rating: 0
+          }
+        )
+      )
+      .then(success => {
+        console.log("success!");
+        this.router.navigate(["/dashboard"]);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }
 
-                    if (flag === undefined) {
-                        alert('User added');
+  deleteTeam(teamName: string) {
+    this.teams_collectionRef.doc(teamName).delete();
+  }
 
-                        // If this is the first time, the team chosen by the user is added to his account
-                        // The name will be the chosen team
-                        this.createUser(this.getCurrentUsersID());
+  createQuestion(question: String) {
+    this.criteria_collectionRef
+      .doc(question.slice(0, 5))
+      .set(Object.assign({}, question))
+      .then(success => {
+        console.log("successfully created crieria!");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }
 
-                    } else {
-                        alert('Welcome Back Bro');
-                        this.router.navigate(['/dashboard']);
+//   deleteCriteria(question: String) {
+//     this.criteria_collectionRef.doc(question.slice(0, 5)).delete();
+//   }
 
-                    }
-                });
-
-        }).catch(
-            (err) => {
-                console.log(err.message);
-        });
-    }
-
-    // Must add the name and pictureURL
-    createUser(id) {
-
-        // this.afs.collection("/Users/").push({
-        //     Teams: { TeamID: this.getTeamKey() },
-        //     Name: this.getUserName(),
-        //     PictureURL: this.getUserPicture(),
-        //     User: id,
-        // });
-
-        // // this.afs.collection("/Teams/" + this.getTeamKey() + "/Members/").push({
-        // //     Members: { UserID: id },
-        // // });
-    }
-
-    createTeam(team: Team) {
-
-        this.teams_collectionRef.doc('' + team.Name).set(Object.assign({}, team)).then(success => {
-            console.log('success!');
-        }).catch(err => {
-            console.log(err.message);
-        });
-
-        // let flag: Boolean;
-        // // tslint:disable-next-line:no-shadowed-variable
-        // this.teamList.forEach(element => {
-        //     for (let i = 0; i < element.length; i++) {
-        //         console.log(element[i].Name + 'Name of team from DB');
-        //         if (element[i].Name === name) {
-        //             flag = false;
-        //             break;
-        //         }
-        //     }
-        //     if (flag === undefined) {
-        //         alert('Team created');
-        //         // Adds the new team to the database if it's not there already
-        //         this.afs.collection("/Teams/").push({
-        //             Name: name,
-        //             Picture: pictureURL,
-        //             Pin: pin,
-        //             Rating: 0
-        //         });
-        //     } else {
-        //         alert('Team already exists');
-        //     }
-        // });
-
-    }
-
-            // Focus on this
-
-            getTeamMembers(key) {
-
-              for (let i = 0; i < this.teams.length; i++)  {
-                console.log(this.teams[i].Members[i].UserID);
-              }
-
-
-        // tslint:disable-next-line:no-shadowed-variable
-        this.teamList.forEach(element => {
-          for (let i = 0; i < element.length; i++) {
-
-            // console.log(element[i].key + "key");
-            // console.log(element[i].Members);
-            // console.log(element[i].Name);
-                // console.log(element[i].Picture);
-                // console.log(element[i].Pin);
-                // console.log(element[i].Rating);
-
-                // this.teams.push(
-                  //     new Team(element[i].key, element[i].Members,
-                  //  element[i].Name, element[i].Picture, element[i].Pin, element[i].Rating)
-                  // );
-
-                  // console.log(this.teams[i].Key);
-
-                  // console.log(element[i].User + "here")
-                // if(element[i].User == this.getCurrentUsersID()){
-                  //     this.haveAccount = true;
-                  // }
-
-                  if (element[i].key === key) {
-
-                    for (const z = 0; i < element[i].Members.length; i++) {
-                      this.members.push(
-                        new Member(element[i].Members[z].UserID)
-                      );
-                    }
-                  }
-                }
-
-        });
-
-      }
-
-    // getCriteria() {
-
-    //     let array = [];
-    //     this.criteriaList.forEach(element => {
-    //         for(let i = 0; i < element.length; i++){
-
-    //             array.push(
-    //                 new Criteria(element[i].Question)
-    //             )
-
-    //             console.log(element[i].Question)
-
-    //         }
-    //         this.criteria = array;
-    //         console.log("whuu " + this.criteria + " shem!")
-    //     });
-
-    // }
-
-    // Don't run this again
-    createCriteria(question) {
-        let mans = this.criteria_collectionRef.add(Object.assign({ question: question })).then(success => {
-            console.log('success!');
-        }).catch(err => {
-            console.log(err.message);
-        });
+  createCriteria(question) {
+    let mans = this.criteria_collectionRef.add(Object.assign({ question: question })).then(success => {
+        console.log('success!');
+    }).catch(err => {
+        console.log(err.message);
+    });
     }
 
     deleteCriteria(question) {
         console.log("Haybo");
 
-        let citiesRef = this.criteria_collectionRef.ref.where("question", "==", question)
+        this.criteria_collectionRef.ref.where("question", "==", question)
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -297,60 +263,35 @@ export class DatabaseService {
         });
     }
 
-    getCurrentUsersID() {
-        return this.afAuth.auth.currentUser.uid;
-    }
+  getTeamMembers(key) {}
 
-    getUserName() {
-      return this.afAuth.auth.currentUser.displayName;
-    }
-
-    // This is the URL ne broes, just saying you know
-    getUserPicture() {
-      return this.afAuth.auth.currentUser.photoURL;
-    }
-
-    setTeamKey(key) {
-      this.teamKey = key;
-    }
-
-    getTeamKey() {
-        return this.teamKey;
-      }
-
-      logout() {
-        this.afAuth.auth.signOut().then(() => {
-          this.router.navigate(['/login']);
-        });
-    }
-
-
-    // getAllTeams() {
-    //   this.allTeams = this.afDB.list('/Users');
-    //   console.log('got this from getall: ' + this.allTeams.Name);
-    //   return this.allTeams;
-
-    // }
-
-    // getmyteam() {
-      // this.afs.collection('/Teams/' + this.getTeamKey() + '/')
-
-    // assignTeamDetails() {
-    //   this.givenTeamKey = this.route.queryParams.subscribe(params => {
-    //     this.givenTeamKey = params['team'];
-    //   });
-    //    this.getAllTeams();
-    //   console.log('All teames in teamview: ' + this.allTeams.Key);
-      // tslint:disable-next-line:no-shadowed-variable
-      // this.allTeams.forEach(element => {
-      //   for (let i = 0; i < element.length; i++) {
-      //     if (element[i].key === this.givenTeamKey) {
-      //       this.givenTeamKey = element[i];
-      //     }
-      //   }
-      // });
-      // }
-
+  getCurrentUserID() {
+    return this.afAuth.auth.currentUser.uid;
   }
 
+  getUserName() {
+    return this.afAuth.auth.currentUser.displayName;
+  }
 
+  // This is the URL ne broes, just saying you know
+  getUserPicture() {
+    return this.afAuth.auth.currentUser.photoURL;
+  }
+
+  setTeamKey(key) {
+    this.teamKey = key;
+  }
+
+  getTeamKey() {
+    return this.teamKey;
+  }
+
+  getDisableNav() {
+    return this.disableNav;
+  }
+  updateRating(val: number, TeamName: string) {
+    const ref = this.afs.doc(`Teams/${TeamName}`);
+    console.log(ref.valueChanges);
+    ref.update({ Rating: val });
+  }
+}

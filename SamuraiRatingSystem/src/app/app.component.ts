@@ -13,7 +13,7 @@ export class AppComponent  {
   picURL;
   pin;
 
-  constructor(private dbConn: DatabaseService) {
+  constructor(protected dbConn: DatabaseService) {
 
   }
 

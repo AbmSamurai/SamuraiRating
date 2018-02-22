@@ -1,33 +1,38 @@
-import { Observable } from '@firebase/util/dist/esm/src/subscribe';
+// import { Observable } from '@firebase/util/dist/esm/src/subscribe';
 import { DatabaseService } from './../../../service/database.service';
 import { Component, OnInit } from '@angular/core';
-import { Team} from './../../../model/Teams'
+import { Team} from './../../../model/Teams';
+import { Observable } from "rxjs/Rx";
+import { Member } from '../../../model/Member';
+
 
 @Component({
   selector: 'app-person-registration',
   templateUrl: './person-registration.component.html',
   styleUrls: ['./person-registration.component.css','../registration.component.css']
 })
-export class PersonRegistrationComponent implements OnInit {
-  teams: Team[];
+export class PersonRegistrationComponent  {
+  
+  teams: Observable<Team[]>;
+  teamName:string;
+  member: Member = new Member();
 
-  constructor(private dbConn: DatabaseService) { }
+  constructor(protected dbConn: DatabaseService) {
+    this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
+   }
 
-  ngOnInit() {
-    console.log(this.dbConn.getTeams() + "Teams at the right place");
-    this.dbConn.getTeams().subscribe(res => {
-      this.teams = res;
-      // console.log(res + "Result")
-    })
-    // this.teams = this.dbConn.getTeams();
+
+  submit(){
+   var subscription = this.dbConn.getUser(this.dbConn.getCurrentUserID()).valueChanges().subscribe(response =>{
+     this.member = response as Member;
+     console.log(response);  
+     this.dbConn.setTeam(this.member,this.teamName);
+     subscription.unsubscribe();
+   });
+    
   }
 
-  setKey(key){
-    this.dbConn.setTeamKey(key);
-    console.log(this.dbConn.getTeamKey() + "team key")
+  setSelection(teamName:string){
+    this.teamName = teamName;
   }
-
-
-
-
 }

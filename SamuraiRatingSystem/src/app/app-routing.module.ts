@@ -1,4 +1,5 @@
 import { CriteriaReviewComponent } from './components/criteria-review/criteria-review.component';
+import { TeamReviewComponent } from './components/team-review/team-review.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: "admin",
     component: CriteriaReviewComponent
+
+  },{
+    path:'review/:teamname',
+    component:TeamReviewComponent
   }
 ];
 

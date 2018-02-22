@@ -1,23 +1,19 @@
-
   <div  class="flip-container" ontouchstart="this.classList.toggle('hover');">
     <div class="flipper">
       <div class="front">
         <div class="card-container">
           <h4 class="raleway font-thin">{{ team.Name }}</h4>
-          <div class="team-logo">
-            <img src=" {{ team.PictureUrl | safe}}">
-          </div>
+            <img class="team-logo" [src]= "team.Picture | safe">
           <h4 class="raleway font-thin">Points: {{ team.Rating }}</h4>
         </div>
-
       </div>
       <div class="back">
         <div class="card-container">
           <div class="submit-button ">
-            <span class="submit-text">Review</span>
+            <span class="submit-text" (click)="StartReview(team.Name)">Review</span>
           </div>
-          <div class="submit-button">
-            <span class="submit-text" (click)="sendTeam(team)">View</span>
+          <div class="submit-button" (click)="sendTeam(team)">
+            <span class="submit-text" >View</span>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { CriteriaReviewComponent } from './components/criteria-review/criteria-r
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireStorageModule } from 'angularfire2/storage';
@@ -24,6 +24,7 @@ import { DatabaseService } from './service/database.service';
 import { AuthGuard } from './service/auth-guard.service';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { SafePipe } from './pipe/safe.pipe';
+import { TeamReviewComponent } from './components/team-review/team-review.component';
 
 export const config  = {
   apiKey: 'AIzaSyADdYbrD14h7lBjRckwdUh5PoTwflXeVWk',
@@ -45,7 +46,7 @@ export const config  = {
     RegistrationComponent,
     TeamRegistrationComponent,
     PersonRegistrationComponent,
-    AdminRegistrationComponent,
+    AdminRegistrationComponent,TeamReviewComponent,
     TeamViewComponent,
     SafePipe,
     CriteriaComponent,
@@ -57,10 +58,10 @@ export const config  = {
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    FormsModule,
+    FormsModule,ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,
   ], 
   providers: [
