@@ -10,9 +10,9 @@ import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { Observable } from "rxjs/Observable";
 import { AngularFireAuth } from "angularfire2/auth";
 import * as firebase from "firebase/app";
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from "@firebase/auth-types";
-import { AngularFireStorage } from "angularfire2/storage";
+import { AngularFireStorage } from 'angularfire2/storage';
 import { Subscription } from "rxjs/Subscription";
 // import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
@@ -24,6 +24,7 @@ export class DatabaseService {
   displayPercentage: number;
   allTeams;
   public SneakedTeam;
+  
   disableNav: boolean = false;
 
   userList;
@@ -160,24 +161,24 @@ export class DatabaseService {
     var prevTeam = member.team;
     team.Members.push(member);
     member.team = selectedTeam;
-    //updates member
+    // updates member
     this.user_collectionRef.doc(member.UID).update(Object.assign({}, member));
 
-    //switch members
+    // switch members
     this.switchTeam(prevTeam, member.UID);
 
-    //update team 
+    // update team
     this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
   }
 
   switchTeam(prevTeam: string, UID: string) {
-    var team;
+    let team;
     this.teams_collectionRef
       .doc(prevTeam)
       .valueChanges()
       .subscribe(response => {
         team = response as Team;
-        for (var i = 0; i < team.Members.length; i++) {
+        for (let i = 0; i < team.Members.length; i++) {
           if (UID === team.Members[i].UID) {
             team.Members.splice(i, 1);
           }
@@ -202,8 +203,8 @@ export class DatabaseService {
         )
       )
       .then(success => {
-        console.log("success!");
-        this.router.navigate(["/dashboard"]);
+        console.log('success!');
+        this.router.navigate(['/dashboard']);
       })
       .catch(err => {
         console.log(err.message);
@@ -219,7 +220,7 @@ export class DatabaseService {
       .doc(question.slice(0, 5))
       .set(Object.assign({}, question))
       .then(success => {
-        console.log("successfully created crieria!");
+        console.log('successfully created crieria!');
       })
       .catch(err => {
         console.log(err.message);

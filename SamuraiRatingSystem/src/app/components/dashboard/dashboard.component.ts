@@ -16,8 +16,9 @@ export class DashboardComponent implements OnInit {
   constructor(private dbConn: DatabaseService) {
    }
 
+
   ngOnInit() {
-    this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
+    this.teams = this.dbConn.allTeams;
   }
 
 }
