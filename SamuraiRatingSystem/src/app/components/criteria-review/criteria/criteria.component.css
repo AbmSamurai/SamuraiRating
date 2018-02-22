@@ -1,0 +1,19 @@
+.reviewLabel{
+    font-size: 72px;
+    margin: 2%; 
+}
+
+.criteriaLabel{
+    font-size: 16px;
+    margin: 1%;
+}
+
+.addInput{
+    width: 20%;
+    border: 1px solid #FFA000;
+    margin: 2%;
+}
+
+i{
+    cursor: pointer;
+}

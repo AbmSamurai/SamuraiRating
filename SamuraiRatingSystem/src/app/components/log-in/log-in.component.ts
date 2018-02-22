@@ -14,11 +14,12 @@ export class LogInComponent implements OnInit {
    }
 
   ngOnInit() {
-    
+
   }
 
 
   login() {
     this.dbauth.googlePopup();
+    this.dbauth.allTeams = this.dbauth.getTeams();
   }
 }

@@ -10,9 +10,9 @@ import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { Observable } from "rxjs/Observable";
 import { AngularFireAuth } from "angularfire2/auth";
 import * as firebase from "firebase/app";
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from "@firebase/auth-types";
-import { AngularFireStorage } from "angularfire2/storage";
+import { AngularFireStorage } from 'angularfire2/storage';
 import { Subscription } from "rxjs/Subscription";
 // import { Criteria } from '../model/Criteria';
 // import from 'rxjs/operators/map'
@@ -24,6 +24,7 @@ export class DatabaseService {
   displayPercentage: number;
   allTeams;
   public SneakedTeam;
+  
   disableNav: boolean = false;
   hasBeenRemoved: boolean = false;
   userList;
@@ -42,7 +43,7 @@ export class DatabaseService {
   member: Member = new Member();
 
   teams_collectionRef = this.afs.collection<Team>("Teams");
-  criteria_collectionRef = this.afs.collection<Criteria>("criteria");
+  criteria_collectionRef = this.afs.collection<any>("criteria");
   user_collectionRef = this.afs.collection<User>("users");
   constructor(
     private afs: AngularFirestore,
@@ -160,18 +161,17 @@ export class DatabaseService {
     var prevTeam = member.team;
     team.Members.push(member);
     member.team = selectedTeam;
-    //updates member
+    // updates member
     this.user_collectionRef.doc(member.UID).update(Object.assign({}, member));
 
-    //switch members
+    // switch members
     this.switchTeam(prevTeam, member.UID);
 
-    //update team 
+    // update team
     this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
   }
 
   switchTeam(prevTeam: string, UID: string) {
-    
     var team;
     var subscription = this.teams_collectionRef
       .doc(prevTeam)
@@ -208,8 +208,8 @@ export class DatabaseService {
         )
       )
       .then(success => {
-        console.log("success!");
-        this.router.navigate(["/dashboard"]);
+        console.log('success!');
+        this.router.navigate(['/dashboard']);
       })
       .catch(err => {
         console.log(err.message);
@@ -225,16 +225,49 @@ export class DatabaseService {
       .doc(question.slice(0, 5))
       .set(Object.assign({}, question))
       .then(success => {
-        console.log("successfully created crieria!");
+        console.log('successfully created crieria!');
       })
       .catch(err => {
         console.log(err.message);
       });
   }
 
-  deleteCriteria(question: String) {
-    this.criteria_collectionRef.doc(question.slice(0, 5)).delete();
-  }
+//   deleteCriteria(question: String) {
+//     this.criteria_collectionRef.doc(question.slice(0, 5)).delete();
+//   }
+
+  createCriteria(question) {
+    let mans = this.criteria_collectionRef.add(Object.assign({ question: question })).then(success => {
+        console.log('success!');
+    }).catch(err => {
+        console.log(err.message);
+    });
+    }
+
+    deleteCriteria(question) {
+        console.log("Haybo");
+
+        this.criteria_collectionRef.ref.where("question", "==", question)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+            
+            this.delete(doc.id);
+        });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+
+    }
+
+    delete(key){
+        this.afs.collection("criteria").doc(key).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+    }
 
   getTeamMembers(key) {}
 
