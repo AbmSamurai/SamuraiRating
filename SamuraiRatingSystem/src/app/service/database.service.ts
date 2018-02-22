@@ -167,7 +167,6 @@ export class DatabaseService {
     this.switchTeam(prevTeam, member.UID);
 
     //update team 
-    console.log('updated team',team.Name)
     this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
   }
 
@@ -179,14 +178,9 @@ export class DatabaseService {
       .valueChanges()
       .subscribe(response => {
         team = response as Team;
-        console.log('previous team', team)
         for (var i = 0; i < team.Members.length; i++) { 
-          console.log('UID', UID);
-          console.log('team.Members[i].UID', team.Members[i].UID)
-          console.log('VALUE', UID === team.Members[i].UID)
           if (UID === team.Members[i].UID && !this.hasBeenRemoved) {
             team.Members.splice(i, 1);
-            console.log('spliced!', team.Members[i]);
            this.hasBeenRemoved = true;
           }
         }
