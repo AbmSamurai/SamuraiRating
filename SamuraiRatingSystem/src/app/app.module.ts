@@ -1,8 +1,10 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { CriteriaComponent } from './components/criteria-review/criteria/criteria.component';
+import { ReviewComponent } from './components/criteria-review/review/review.component';
+import { CriteriaReviewComponent } from './components/criteria-review/criteria-review.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireStorageModule } from 'angularfire2/storage';
@@ -23,7 +25,6 @@ import { AuthGuard } from './service/auth-guard.service';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { SafePipe } from './pipe/safe.pipe';
 import { TeamReviewComponent } from './components/team-review/team-review.component';
-
 
 export const config  = {
   apiKey: 'AIzaSyADdYbrD14h7lBjRckwdUh5PoTwflXeVWk',
@@ -48,7 +49,10 @@ export const config  = {
     AdminRegistrationComponent,
     TeamReviewComponent,
     TeamViewComponent,
-    SafePipe
+    SafePipe,
+    CriteriaComponent,
+    ReviewComponent,
+    CriteriaReviewComponent
   ],
   imports: [
     BrowserModule,

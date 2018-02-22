@@ -43,7 +43,7 @@ export class DatabaseService {
   member: Member = new Member();
 
   teams_collectionRef = this.afs.collection<Team>("Teams");
-  criteria_collectionRef = this.afs.collection<Criteria>("criteria");
+  criteria_collectionRef = this.afs.collection<any>("criteria");
   user_collectionRef = this.afs.collection<User>("users");
   constructor(
     private afs: AngularFirestore,
@@ -227,9 +227,42 @@ export class DatabaseService {
       });
   }
 
-  deleteCriteria(question: String) {
-    this.criteria_collectionRef.doc(question.slice(0, 5)).delete();
-  }
+//   deleteCriteria(question: String) {
+//     this.criteria_collectionRef.doc(question.slice(0, 5)).delete();
+//   }
+
+  createCriteria(question) {
+    let mans = this.criteria_collectionRef.add(Object.assign({ question: question })).then(success => {
+        console.log('success!');
+    }).catch(err => {
+        console.log(err.message);
+    });
+    }
+
+    deleteCriteria(question) {
+        console.log("Haybo");
+
+        this.criteria_collectionRef.ref.where("question", "==", question)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+            
+            this.delete(doc.id);
+        });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+
+    }
+
+    delete(key){
+        this.afs.collection("criteria").doc(key).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+    }
 
   getTeamMembers(key) {}
 

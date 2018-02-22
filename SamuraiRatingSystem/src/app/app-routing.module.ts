@@ -1,3 +1,4 @@
+import { CriteriaReviewComponent } from './components/criteria-review/criteria-review.component';
 import { TeamReviewComponent } from './components/team-review/team-review.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,9 @@ const routes: Routes = [
   {
     path: 'registration',
     component: RegistrationComponent
+  },  {
+    path: "admin",
+    component: CriteriaReviewComponent
   }, {
 
     path: 'teamView',
