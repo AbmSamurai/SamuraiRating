@@ -12,23 +12,31 @@ import { Member } from '../../../model/Member';
 })
 export class PersonRegistrationComponent  {
   
-  teams: Observable<Team[]>;
+  teams: Array<Team> = new Array<Team>();
   teamName:string;
   member: Member = new Member();
+  currentMember: Member;
 
   constructor(protected dbConn: DatabaseService) {
-    this.teams = this.dbConn.getTeams().map(response =>  response as Team[]);
+
+   
+    var subscription = this.dbConn.getUser(this.dbConn.getCurrentUserID()).valueChanges().subscribe(response =>{
+      this.member = response as Member;
+      this.dbConn.getTeams().subscribe(response =>{
+        
+        this.teams = response as Team[];
+        this.teams = this.teams.filter((team) => team.Name  != this.member.team)
+        
+      })
+    });
+
+   
    }
 
 
   submit(){
-   var subscription = this.dbConn.getUser(this.dbConn.getCurrentUserID()).valueChanges().subscribe(response =>{
-     this.member = response as Member;
-     console.log(response);  
-     this.dbConn.setTeam(this.member,this.teamName);
-     subscription.unsubscribe();
-   });
-    
+    this.dbConn.hasBeenRemoved = false;
+    this.dbConn.setTeam(this.member,this.teamName);
   }
 
   setSelection(teamName:string){

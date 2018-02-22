@@ -3,7 +3,8 @@
         <h3 class="col-6 col-sm-10 col-md-12">Team Name</h3>
         <select [(ngModel)]='teamName' class=" col-10 col-sm-10 col-md-12">
             <option>Switch to team:</option>
-            <option  *ngFor = "let team of teams | async">{{ team.Name }}</option>
+            <option *ngFor = "let team of teams">{{ team.Name }}</option>
+           
         </select>
     </div>
     <div class="col-12 submit-button-container">

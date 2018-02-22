@@ -25,7 +25,7 @@ export class DatabaseService {
   allTeams;
   public SneakedTeam;
   disableNav: boolean = false;
-
+  hasBeenRemoved: boolean = false;
   userList;
   teamList;
   criteriaList;
@@ -167,23 +167,35 @@ export class DatabaseService {
     this.switchTeam(prevTeam, member.UID);
 
     //update team 
+    console.log('updated team',team.Name)
     this.teams_collectionRef.doc(selectedTeam).update(Object.assign({}, team));
   }
 
   switchTeam(prevTeam: string, UID: string) {
+    
     var team;
-    this.teams_collectionRef
+    var subscription = this.teams_collectionRef
       .doc(prevTeam)
       .valueChanges()
       .subscribe(response => {
         team = response as Team;
-        for (var i = 0; i < team.Members.length; i++) {
-          if (UID === team.Members[i].UID) {
+        console.log('previous team', team)
+        for (var i = 0; i < team.Members.length; i++) { 
+          console.log('UID', UID);
+          console.log('team.Members[i].UID', team.Members[i].UID)
+          console.log('VALUE', UID === team.Members[i].UID)
+          if (UID === team.Members[i].UID && !this.hasBeenRemoved) {
             team.Members.splice(i, 1);
+            console.log('spliced!', team.Members[i]);
+           this.hasBeenRemoved = true;
           }
         }
         this.teams_collectionRef.doc(prevTeam).update(Object.assign({}, team));
+
+
       });
+
+      
   }
 
   createTeam(team: Team) {
